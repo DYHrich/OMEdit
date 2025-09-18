@@ -2,7 +2,6 @@
 /.metadata/
 /.project
 /.settings
-/.vscode/
 /autom4te.cache/
 /build/
 /build_cmake/
