@@ -1184,7 +1184,7 @@ QStringList StringHandler::unparseArrays(QString value)
 bool StringHandler::unparseBool(QString value)
 {
   value = value.trimmed();
-  return value == "true";
+  return value == "true" || value == "True";
 }
 
 QString StringHandler::getSaveFileName(QWidget* parent, const QString &caption, QString * dir, const QString &filter, QString * selectedFilter,

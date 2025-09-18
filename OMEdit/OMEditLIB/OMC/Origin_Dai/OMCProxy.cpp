@@ -34,9 +34,8 @@
 
 #include <stdlib.h>
 #include <iostream>
-#include "PythonEnv.h"
-#include "OMCProxy.h"
 
+#include "OMCProxy.h"
 #include "MainWindow.h"
 #include "Util/OutputPlainTextEdit.h"
 #include "Element/Element.h"
@@ -46,21 +45,14 @@
 #include "util/omc_error.h"
 #include "FlatModelica/Expression.h"
 
-
-
-/*
-- 接收前端创建的threadData
-- 使用threadData与OMC编译器进行通信
-- 不是创建threadData，而是使用它
-*/
-// extern "C" {
-// int omc_Main_handleCommand(void *threadData, void *imsg, void **omsg);
-// void* omc_Main_init(void *threadData, void *args);
-// void omc_System_initGarbageCollector(void *threadData);
-// #if defined(_WIN32)
-// void omc_Main_setWindowsPaths(threadData_t *threadData, void* _inOMHome);
-// #endif
-// }
+extern "C" {
+int omc_Main_handleCommand(void *threadData, void *imsg, void **omsg);
+void* omc_Main_init(void *threadData, void *args);
+void omc_System_initGarbageCollector(void *threadData);
+#if defined(_WIN32)
+void omc_Main_setWindowsPaths(threadData_t *threadData, void* _inOMHome);
+#endif
+}
 
 #include <QMessageBox>
 #include <QStringBuilder>
@@ -223,7 +215,11 @@ void OMCProxy::getNextCommand()
   }
 }
 
-
+/*!
+  Initializes the OpenModelica Compiler binary.\n
+  Creates the omeditcommunication.log & omeditcommands.mos files.
+  \return status - returns true if initialization is successful otherwise false.
+  */
 bool OMCProxy::initializeOMC(threadData_t *threadData)
 {
   /* create the tmp path */
@@ -242,182 +238,60 @@ bool OMCProxy::initializeOMC(threadData_t *threadData)
 #else
   mpCommandsLogFile = fopen(commandsLogFilePath.toUtf8().constData(), "w");
 #endif
-
-  // 使用OMPython初始化，替代原有的C函数调用
-  try {
-    // 获取PythonEnv实例并初始化
-    PythonEnv& pythonEnv = PythonEnv::get_instance();
-    
-    // 读取locale设置
-    QSettings *pSettings = Utilities::getApplicationSettings();
-    QLocale settingsLocale = QLocale(pSettings->value("language").toString());
-    settingsLocale = settingsLocale.name() == "C" ? QLocale::system() : settingsLocale;
-    
-    // 通过OMPython设置locale
-    QString localeCommand = QString("setCommandLineOptions(\"+locale=%1\")").arg(settingsLocale.name());
-    pythonEnv.send_expression_object(localeCommand.toStdString());
-    
-    // 初始化垃圾收集器（通过OMPython命令）
-    pythonEnv.send_expression_object("system(\"initGarbageCollector\")");
-    
-    // 设置回调函数指针（保留原有逻辑）
-    // threadData->plotClassPointer = MainWindow::instance();
-    // threadData->plotCB = MainWindow::PlotCallbackFunction;
-    // threadData->loadModelClassPointer = MainWindow::instance();
-    // threadData->loadModelCB = MainWindow::LoadModelCallbackFunction;
-    
-  } catch (const std::exception& e) {
-    // OMPython初始化失败
-    QString errorMsg = QString("Failed to initialize OMC through OMPython: %1").arg(e.what());
-    QMessageBox::critical(nullptr, "OMC Initialization Error", errorMsg);
-    return false;
-  }
-
-  // 创建OMCInterface（保持原有逻辑）
+  // read the locale
+  QSettings *pSettings = Utilities::getApplicationSettings();
+  QLocale settingsLocale = QLocale(pSettings->value("language").toString());
+  settingsLocale = settingsLocale.name() == "C" ? QLocale::system() : settingsLocale;
+  void *args = mmc_mk_nil();
+  QString locale = "+locale=" + settingsLocale.name();
+  args = mmc_mk_cons(mmc_mk_scon(locale.toUtf8().constData()), args);
+  // initialize garbage collector
+  omc_System_initGarbageCollector(NULL);
+  MMC_TRY_TOP_INTERNAL()
+  omc_Main_init(threadData, args);
+  threadData->plotClassPointer = MainWindow::instance();
+  threadData->plotCB = MainWindow::PlotCallbackFunction;
+  threadData->loadModelClassPointer = MainWindow::instance();
+  threadData->loadModelCB = MainWindow::LoadModelCallbackFunction;
+  MMC_CATCH_TOP(return false;)
   mpOMCInterface = new OMCInterface(threadData);
   connect(mpOMCInterface, SIGNAL(logCommand(QString)), this, SLOT(logCommand(QString)));
   connect(mpOMCInterface, SIGNAL(logResponse(QString,QString,double)), this, SLOT(logResponse(QString,QString,double)));
   connect(mpOMCInterface, SIGNAL(throwException(QString)), SLOT(showException(QString)));
   mHasInitialized = true;
-  
-  // 通过OMPython获取OpenModelica版本
-  try {
-    PythonEnv& pythonEnv = PythonEnv::get_instance();
-    py::object versionObj = pythonEnv.send_expression_object("getVersion()");
-    std::string versionResult = py::str(versionObj);
-    QString version = QString::fromStdString(versionResult).remove("\""); // 移除可能的引号
-    Helper::OpenModelicaVersion = version;
-    
-    // 设置用户指南版本
-    QString versionShort;
-    int dots = 0;
-    for (int i=0; i < version.length(); i++) {
-      if (version.at(i).isDigit()) {
-        versionShort.append(version.at(i));
-      } else if (version.at(i) == '.') {
-        dots++;
-        if (dots > 1) {
-          break;
-        }
-        versionShort.append(version.at(i));
+  // get OpenModelica version
+  QString version = getVersion();
+  Helper::OpenModelicaVersion = version;
+  // set users guide version
+  QString versionShort;
+  int dots = 0;
+  for (int i=0; i < version.length(); i++) {
+    if (version.at(i).isDigit()) {
+      versionShort.append(version.at(i));
+    } else if (version.at(i) == '.') {
+      dots++;
+      if (dots > 1) {
+        break;
       }
+      versionShort.append(version.at(i));
     }
-    Helper::OpenModelicaUsersGuideVersion = versionShort;
-    
-    // 通过OMPython获取安装目录
-    py::object homeObj = pythonEnv.send_expression_object("getInstallationDirectoryPath()");
-    std::string homeResult = py::str(homeObj);
-    Helper::OpenModelicaHome = QString::fromStdString(homeResult).remove("\"").replace("\\", "/");
-    
-    // 通过OMPython获取ModelicaPath
-    py::object pathObj = pythonEnv.send_expression_object("getModelicaPath()");
-    std::string pathResult = py::str(pathObj);
-    Helper::ModelicaPath = QString::fromStdString(pathResult).remove("\"");
-    
-#if defined(_WIN32)
-    // Windows路径设置（通过OMPython）
-    QString windowsPathCommand = QString("setWindowsPaths(\"%1\")").arg(Helper::OpenModelicaHome);
-    pythonEnv.send_expression_object(windowsPathCommand.toStdString());
-#endif
-    
-    // 设置工作目录
-    QString changeDirCommand = QString("cd(\"%1\")").arg(tmpPath);
-    pythonEnv.send_expression_object(changeDirCommand.toStdString());
-    
-    // 获取用户主目录
-    py::object userHomeObj = pythonEnv.send_expression_object("getHomeDirectoryPath()");
-    std::string userHomeResult = py::str(userHomeObj);
-    Helper::userHomeDirectory = QString::fromStdString(userHomeResult).remove("\"");
-    
-  } catch (const std::exception& e) {
-    // 如果获取信息失败，使用默认值或显示警告
-    QString errorMsg = QString("Warning: Failed to get OMC information through OMPython: %1").arg(e.what());
-    qWarning() << errorMsg;
-    // 可以选择继续执行或返回false
   }
-  
+  Helper::OpenModelicaUsersGuideVersion = versionShort;
+  // set OpenModelicaHome variable
+  Helper::OpenModelicaHome = mpOMCInterface->getInstallationDirectoryPath().replace("\\", "/");
+  // set ModelicaPath variale
+  Helper::ModelicaPath = getModelicaPath();
+#if defined(_WIN32)
+  MMC_TRY_TOP_INTERNAL()
+  omc_Main_setWindowsPaths(threadData, mmc_mk_scon(Helper::OpenModelicaHome.toUtf8().constData()));
+  MMC_CATCH_TOP()
+#endif
+  /* set the tmp directory as the working directory */
+  changeDirectory(tmpPath);
+  // set the user home directory variable.
+  Helper::userHomeDirectory = getHomeDirectoryPath();
   return true;
 }
-
-
-
-/*!
-  Initializes the OpenModelica Compiler binary.\n
-  Creates the omeditcommunication.log & omeditcommands.mos files.
-  \return status - returns true if initialization is successful otherwise false.
-  */
-// bool OMCProxy::initializeOMC(threadData_t *threadData)
-// {
-//   /* create the tmp path */
-//   QString& tmpPath = Utilities::tempDirectory();
-//   /* create a file to write OMEdit communication log */
-//   QString communicationLogFilePath = QString("%1omeditcommunication.log").arg(tmpPath);
-// #ifdef Q_OS_WIN
-//   mpCommunicationLogFile = _wfopen((wchar_t*)communicationLogFilePath.utf16(), L"w");
-// #else
-//   mpCommunicationLogFile = fopen(communicationLogFilePath.toUtf8().constData(), "w");
-// #endif
-//   /* create a file to write OMEdit commands */
-//   QString commandsLogFilePath = QString("%1omeditcommands.mos").arg(tmpPath);
-// #ifdef Q_OS_WIN
-//   mpCommandsLogFile = _wfopen((wchar_t*)commandsLogFilePath.utf16(), L"w");
-// #else
-//   mpCommandsLogFile = fopen(commandsLogFilePath.toUtf8().constData(), "w");
-// #endif
-//   // read the locale
-//   QSettings *pSettings = Utilities::getApplicationSettings();
-//   QLocale settingsLocale = QLocale(pSettings->value("language").toString());
-//   settingsLocale = settingsLocale.name() == "C" ? QLocale::system() : settingsLocale;
-//   void *args = mmc_mk_nil();
-//   QString locale = "+locale=" + settingsLocale.name();
-//   args = mmc_mk_cons(mmc_mk_scon(locale.toUtf8().constData()), args);
-//   // initialize garbage collector
-//   // omc_System_initGarbageCollector(NULL);
-//   MMC_TRY_TOP_INTERNAL()
-//   // omc_Main_init(threadData, args);
-//   threadData->plotClassPointer = MainWindow::instance();
-//   threadData->plotCB = MainWindow::PlotCallbackFunction;
-//   threadData->loadModelClassPointer = MainWindow::instance();
-//   threadData->loadModelCB = MainWindow::LoadModelCallbackFunction;
-//   MMC_CATCH_TOP(return false;)
-//   mpOMCInterface = new OMCInterface(threadData);
-//   connect(mpOMCInterface, SIGNAL(logCommand(QString)), this, SLOT(logCommand(QString)));
-//   connect(mpOMCInterface, SIGNAL(logResponse(QString,QString,double)), this, SLOT(logResponse(QString,QString,double)));
-//   connect(mpOMCInterface, SIGNAL(throwException(QString)), SLOT(showException(QString)));
-//   mHasInitialized = true;
-//   // get OpenModelica version
-//   QString version = getVersion();
-//   Helper::OpenModelicaVersion = version;
-//   // set users guide version
-//   QString versionShort;
-//   int dots = 0;
-//   for (int i=0; i < version.length(); i++) {
-//     if (version.at(i).isDigit()) {
-//       versionShort.append(version.at(i));
-//     } else if (version.at(i) == '.') {
-//       dots++;
-//       if (dots > 1) {
-//         break;
-//       }
-//       versionShort.append(version.at(i));
-//     }
-//   }
-//   Helper::OpenModelicaUsersGuideVersion = versionShort;
-//   // set OpenModelicaHome variable
-//   Helper::OpenModelicaHome = mpOMCInterface->getInstallationDirectoryPath().replace("\\", "/");
-//   // set ModelicaPath variale
-//   Helper::ModelicaPath = getModelicaPath();
-// // #if defined(_WIN32)
-// //   MMC_TRY_TOP_INTERNAL()
-// //   omc_Main_setWindowsPaths(threadData, mmc_mk_scon(Helper::OpenModelicaHome.toUtf8().constData()));
-// //   MMC_CATCH_TOP()
-// // #endif
-//   /* set the tmp directory as the working directory */
-//   changeDirectory(tmpPath);
-//   // set the user home directory variable.
-//   Helper::userHomeDirectory = getHomeDirectoryPath();
-//   return true;
-// }
 
 /*!
  * \brief OMCProxy::quitOMC
@@ -436,7 +310,6 @@ void OMCProxy::quitOMC()
   }
 }
 
-
 /*!
  * \brief OMCProxy::sendCommand
  * Sends the user commands to OMC.
@@ -448,44 +321,23 @@ void OMCProxy::sendCommand(const QString expression, bool saveToHistory)
   QElapsedTimer commandTime;
   commandTime.start();
   logCommand(expression, saveToHistory);
-  
-  try {
-    // 使用 PythonEnv 接口发送命令
-    PythonEnv& pythonEnv = PythonEnv::get_instance();
-    
-    if (!pythonEnv.is_ready()) {
-      mResult = "Error: Python environment not initialized";
-      logResponse(expression, mResult.trimmed(), 0.0, saveToHistory);
-      return;
-    }
-    
-    // 将 QString 转换为 std::string 并发送命令
-    std::string command = expression.toStdString();
-    py::object resultObj = pythonEnv.send_expression_object(command,false);
-    std::string result = py::str(resultObj);
-    
-    // 将结果转换回 QString
-    mResult = QString::fromStdString(result);
-    
-    double elapsed = (double)commandTime.elapsed() / 1000.0;
-    logResponse(expression, mResult.trimmed(), elapsed, saveToHistory);
-    
-    // 处理 quit() 命令
+  // TODO: Call this in a thread that loops over received messages? Avoid MMC_TRY_TOP all the time, etc
+  void *reply_str = NULL;
+  threadData_t *threadData = mpOMCInterface->threadData;
+
+  MMC_TRY_TOP_INTERNAL()
+
+  MMC_TRY_STACK()
+
+  if (!omc_Main_handleCommand(threadData, mmc_mk_scon(expression.toUtf8().constData()), &reply_str)) {
     if (expression == "quit()") {
       return;
     }
-    
-  } catch (const std::exception& e) {
-    mResult = QString("Python communication error: %1").arg(e.what());
-    double elapsed = (double)commandTime.elapsed() / 1000.0;
-    logResponse(expression, mResult.trimmed(), elapsed, saveToHistory);
-    
-    if (expression == "quit()") {
-      return;
-    }
-    // 对于非 quit 命令的错误，可以选择是否退出应用
-    // exitApplication();
+    exitApplication();
   }
+  mResult = MMC_STRINGDATA(reply_str);
+  double elapsed = (double)commandTime.elapsed() / 1000.0;
+  logResponse(expression, mResult.trimmed(), elapsed, saveToHistory);
 
   /* Check if any custom command updates the program.
    * saveToHistory is true for custom commands.
@@ -522,85 +374,16 @@ void OMCProxy::sendCommand(const QString expression, bool saveToHistory)
       showException(QString("Error parsing expression: %1.").arg(e.what()));
     }
   }
+
+  MMC_ELSE()
+    mResult = "";
+    fprintf(stderr, "Stack overflow detected and was not caught.\nSend us a bug report at https://trac.openmodelica.org/OpenModelica/newticket\n    Include the following trace:\n");
+    printStacktraceMessages();
+    fflush(NULL);
+  MMC_CATCH_STACK()
+
+  MMC_CATCH_TOP(mResult = "");
 }
-
-
-
-
-/*!
- * \brief OMCProxy::sendCommand
- * Sends the user commands to OMC.
- * \param expression - is used to send command as a string.
- */
-// void OMCProxy::sendCommand(const QString expression, bool saveToHistory)
-// {
-//   // write command to the commands log.
-//   QElapsedTimer commandTime;
-//   commandTime.start();
-//   logCommand(expression, saveToHistory);
-//   // TODO: Call this in a thread that loops over received messages? Avoid MMC_TRY_TOP all the time, etc
-//   void *reply_str = NULL;
-//   threadData_t *threadData = mpOMCInterface->threadData;
-
-//   MMC_TRY_TOP_INTERNAL()
-
-//   MMC_TRY_STACK()
-
-//   if (!omc_Main_handleCommand(threadData, mmc_mk_scon(expression.toUtf8().constData()), &reply_str)) {
-//     if (expression == "quit()") {
-//       return;
-//     }
-//     exitApplication();
-//   }
-//   mResult = MMC_STRINGDATA(reply_str);
-//   double elapsed = (double)commandTime.elapsed() / 1000.0;
-//   logResponse(expression, mResult.trimmed(), elapsed, saveToHistory);
-
-//   /* Check if any custom command updates the program.
-//    * saveToHistory is true for custom commands.
-//    * Fixes issue #8052
-//    */
-//   if (saveToHistory) {
-//     try {
-//       FlatModelica::Expression exp = FlatModelica::Expression::parse(expression);
-
-//       if (mLibrariesBrowserAdditionCommandsList.contains(exp.functionName())) {
-//         MainWindow::instance()->getLibraryWidget()->getLibraryTreeModel()->loadDependentLibraries(getClassNames());
-//       } else if (mLibrariesBrowserDeletionCommandsList.contains(exp.functionName())) {
-//         if (exp.functionName().compare(QStringLiteral("deleteClass")) == 0) {
-//           if (exp.args().size() > 0) {
-//             LibraryTreeItem *pLibraryTreeItem = MainWindow::instance()->getLibraryWidget()->getLibraryTreeModel()->findLibraryTreeItem(exp.arg(0).toQString());
-//             if (pLibraryTreeItem) {
-//               MainWindow::instance()->getLibraryWidget()->getLibraryTreeModel()->unloadClass(pLibraryTreeItem, false, false);
-//             }
-//           }
-//         } else {
-//           int i = 0;
-//           while (i < MainWindow::instance()->getLibraryWidget()->getLibraryTreeModel()->getRootLibraryTreeItem()->childrenSize()) {
-//             LibraryTreeItem *pLibraryTreeItem = MainWindow::instance()->getLibraryWidget()->getLibraryTreeModel()->getRootLibraryTreeItem()->child(i);
-//             if (pLibraryTreeItem && pLibraryTreeItem->isModelica()) {
-//               MainWindow::instance()->getLibraryWidget()->getLibraryTreeModel()->unloadClass(pLibraryTreeItem, false, false);
-//               i = 0;  //Restart iteration
-//             } else {
-//               i++;
-//             }
-//           }
-//         }
-//       }
-//     } catch (const std::exception &e) {
-//       showException(QString("Error parsing expression: %1.").arg(e.what()));
-//     }
-//   }
-
-//   MMC_ELSE()
-//     mResult = "";
-//     fprintf(stderr, "Stack overflow detected and was not caught.\nSend us a bug report at https://trac.openmodelica.org/OpenModelica/newticket\n    Include the following trace:\n");
-//     printStacktraceMessages();
-//     fflush(NULL);
-//   MMC_CATCH_STACK()
-
-//   MMC_CATCH_TOP(mResult = "");
-// }
 
 /*!
   Sets the command result.

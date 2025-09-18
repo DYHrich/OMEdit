@@ -24,6 +24,8 @@ set(OMEDITLIB_SOURCES Util/Helper.cpp
                       Util/DirectoryOrFileSelector.cpp
                       MainWindow.cpp
                       OMC/OMCProxy.cpp
+                      OMC/PythonEnv.cpp
+                      OMC/PythonQtConverter.cpp
                       Modeling/Model.cpp
                       Modeling/MessagesWidget.cpp
                       Modeling/ItemDelegate.cpp
@@ -151,6 +153,8 @@ set(OMEDITLIB_HEADERS Util/Helper.h
                       Util/DirectoryOrFileSelector.h
                       MainWindow.h
                       OMC/OMCProxy.h
+                      OMC/PythonEnv.h
+                      OMC/PythonQtConverter.h
                       Modeling/Model.h
                       Modeling/MessagesWidget.h
                       Modeling/ItemDelegate.h
@@ -298,13 +302,11 @@ else()
   qt5_add_translation(OMEDITLIB_TRANSLATIONS ${TS_FILES})
 endif()
 
-# Add the OpenModelica generated files to sources
-set(OMEDITLIB_HEADERS ${OMEDITLIB_HEADERS} ${OMCompiler_SOURCE_DIR}/Compiler/Script/OpenModelicaScriptingAPIQt.h)
-set(OMEDITLIB_SOURCES ${OMEDITLIB_SOURCES} ${OMCompiler_SOURCE_DIR}/Compiler/Script/OpenModelicaScriptingAPIQt.cpp)
-# Even though these are outputs of CMake custom commands, cmake fails to automatically recognize them as generated.
-# My guess is that the directory difference is confusing it. So maunally mark them as generated.
-set_source_files_properties(${OMCompiler_SOURCE_DIR}/Compiler/Script/OpenModelicaScriptingAPIQt.cpp GENERATED)
-set_source_files_properties(${OMCompiler_SOURCE_DIR}/Compiler/Script/OpenModelicaScriptingAPIQt.h GENERATED)
+# Add the local OpenModelicaScriptingAPIQt and PythonEnv files to sources
+set(OMEDITLIB_HEADERS ${OMEDITLIB_HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/OMC/OpenModelicaScriptingAPIQt.h)
+set(OMEDITLIB_HEADERS ${OMEDITLIB_HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/OMC/PythonEnv.h)
+set(OMEDITLIB_SOURCES ${OMEDITLIB_SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/OMC/OpenModelicaScriptingAPIQt.cpp)
+set(OMEDITLIB_SOURCES ${OMEDITLIB_SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/OMC/PythonEnv.cpp)
 
 add_library(OMEditLib STATIC ${OMEDITLIB_SOURCES} ${OMEDITLIB_HEADERS} ${OMEDITLIB_TRANSLATIONS})
 
@@ -357,6 +359,12 @@ target_link_libraries(OMEditLib PUBLIC OpenModelicaCompiler)
 target_link_libraries(OMEditLib PUBLIC ${OPENSCENEGRAPH_LIBRARIES})
 target_link_libraries(OMEditLib PUBLIC OpenGL::GL)
 
+# Add Python3 and pybind11 support
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+find_package(pybind11 REQUIRED)
+target_link_libraries(OMEditLib PRIVATE pybind11::embed)
+target_link_libraries(OMEditLib PRIVATE Python3::Python)
+
 # Silence OpenGL deprecation warnings on macOS
 if(APPLE)
   target_compile_definitions(OMEditLib PRIVATE GL_SILENCE_DEPRECATION)
@@ -367,7 +375,7 @@ if(MINGW)
   target_link_libraries(OMEditLib PUBLIC zlib)
 endif()
 
-target_include_directories(OMEditLib PUBLIC ${OMCompiler_SOURCE_DIR}/Compiler/Script)
+target_include_directories(OMEditLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/OMC)
 
 # Install the translation files
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Resources/nls

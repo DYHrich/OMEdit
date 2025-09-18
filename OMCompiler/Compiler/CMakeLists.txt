@@ -3,6 +3,10 @@ omc_add_subdirectory(runtime)
 omc_add_subdirectory(boot)
 omc_add_subdirectory(FrontEndCpp)
 
+# Find Python and pybind11 for PythonEnv
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
+find_package(pybind11 REQUIRED)
+
 
 # set(OMC_EXE ${PROJECT_SOURCE_DIR}/../build/bin/omc)
 set(OMC_EXE $<TARGET_FILE:bomc>)
@@ -116,8 +120,6 @@ add_custom_command(
     COMMAND ${OMC_EXE} -g=MetaModelica -n=1 ${CMAKE_CURRENT_SOURCE_DIR}/Script/OpenModelicaScriptingAPI.mos
 
     OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/Script/OpenModelicaScriptingAPI.mo
-    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/Script/OpenModelicaScriptingAPIQt.cpp
-    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/Script/OpenModelicaScriptingAPIQt.h
     COMMENT "Generating ${CMAKE_CURRENT_SOURCE_DIR}/Script/OpenModelicaScriptingAPI.mo using ${CMAKE_CURRENT_SOURCE_DIR}/Script/OpenModelicaScriptingAPI.mos"
 )
 
@@ -239,6 +241,9 @@ target_include_directories(OpenModelicaCompiler PRIVATE ${CMAKE_CURRENT_SOURCE_D
 # We can maybe copy these headers to some specific location after generation and avoid this.
 target_include_directories(OpenModelicaCompiler INTERFACE ${CMAKE_CURRENT_BINARY_DIR}/c_files)
 
+# Add Script directory to include path for PythonEnv.h
+target_include_directories(OpenModelicaCompiler PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Script)
+
 # OMC will overflow the stack (at least on Windows old OMDev) on very deep recursive calls.
 # E.g., try translating the CodegenCpp* tpl files to mo files with
 # an omc not compiled without large stack size. The tpl parser is quite recursive and will
@@ -263,6 +268,10 @@ target_link_libraries(OpenModelicaCompiler PUBLIC omc::compiler::backendruntime)
 target_link_libraries(OpenModelicaCompiler PUBLIC omc::compiler::runtime)
 target_link_libraries(OpenModelicaCompiler PUBLIC omc::compiler::frontendcpp)
 target_link_libraries(OpenModelicaCompiler PUBLIC omc::simrt::runtime)
+
+# Link Python and pybind11 for PythonEnv
+target_link_libraries(OpenModelicaCompiler PRIVATE pybind11::embed)
+target_link_libraries(OpenModelicaCompiler PRIVATE Python3::Python)
 
 # On Windows we need explicitly tell the dll to export all symbols. It is not so good
 # that we have to export all symbols. However, OMEdit uses some of the functions in the

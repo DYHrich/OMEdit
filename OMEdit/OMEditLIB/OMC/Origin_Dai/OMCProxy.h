@@ -84,8 +84,6 @@ private:
   QStringList mLibrariesBrowserAdditionCommandsList;
   QStringList mLibrariesBrowserDeletionCommandsList;
   bool mLoadModelError;
-
-
 public:
   OMCProxy(threadData_t *threadData, QWidget *pParent = 0);
   ~OMCProxy();
