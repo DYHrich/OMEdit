@@ -38,7 +38,13 @@
 #include "Helper.h"
 #include "Utilities.h"
 #include "Util/ResourceCache.h"
+
+#ifndef OMEditself
 #include "om_format.h"
+#else
+#include "3rdParty/ryu/om_format.h"
+#endif
+
 
 #include <QtCore/qmath.h>
 #include <QDir>

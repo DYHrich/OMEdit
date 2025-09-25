@@ -39,7 +39,13 @@
 #include "Modeling/ItemDelegate.h"
 #include "Options/OptionsDialog.h"
 #include "Modeling/MessagesWidget.h"
+
+#ifndef OMEditself
 #include "util/read_matlab4.h"
+#else
+#include "SimulationRuntime/c/util/read_matlab4.h"
+#endif
+
 #include "Plotting/PlotWindowContainer.h"
 #include "Plotting/DiagramWindow.h"
 #include "Simulation/SimulationDialog.h"

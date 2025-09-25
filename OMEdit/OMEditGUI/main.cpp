@@ -39,11 +39,19 @@
 
 #include "OMEditApplication.h"
 #include "CrashReport/CrashReportDialog.h"
+#include <iostream>
 #define GC_THREADS
 
+
 extern "C" {
+#ifndef DISABLE_META_MODELICA
 #include "meta/meta_modelica.h"
+#else
+#include"SimulationRuntime/c/gc/omc_gc.h"
+#include"SimulationRuntime/c/openmodelica_types.h"
+#endif
 }
+
 
 #include <QMessageBox>
 
@@ -154,8 +162,13 @@ static int execution_failed()
 
 int main(int argc, char *argv[])
 {
+#ifndef DISABLE_META_MODELICA
   MMC_INIT();
   MMC_TRY_TOP()
+#else
+  threadData_t *threadData = NULL;
+  std::cout<<"OMEdit: threadData is NULL"<<std::endl;
+#endif
   // if user asks for --help
   for(int i = 1; i < argc; i++) {
     if (strcmp(argv[i], "--help") == 0) {
@@ -189,6 +202,7 @@ int main(int argc, char *argv[])
 #endif // #ifdef QT_NO_DEBUG
 
   return a.exec();
-
+#ifndef DISABLE_META_MODELICA
   MMC_CATCH_TOP(return execution_failed());
+#endif
 }

@@ -2,7 +2,13 @@
 #define OPCUACLIENT_H
 
 #include "OMPlot.h"
+
+#ifndef OMEditself
 #include "open62541.h"
+#else
+#include "3rdParty/open62541/open62541.h"
+#endif
+// #include "open62541.h"
 #include "SimulationOptions.h"
 
 #include "qwt_series_data.h"

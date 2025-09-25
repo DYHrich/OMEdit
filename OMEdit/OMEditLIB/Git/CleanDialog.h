@@ -9,7 +9,7 @@
 #include <QPushButton>
 #include <QDialogButtonBox>
 #include <QStandardItemModel>
-#include<QProcess>
+#include <QProcess>
 
 
 class CleanDialog : public QDialog

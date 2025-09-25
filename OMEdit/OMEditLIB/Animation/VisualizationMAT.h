@@ -36,7 +36,12 @@
 #define VISUALIZATIONMAT_H
 
 #include "Visualization.h"
+
+#ifndef OMEditself
 #include "util/read_matlab4.h"
+#else
+#include "SimulationRuntime/c/util/read_matlab4.h"
+#endif
 
 class VisualizationMAT : public VisualizationAbstract
 {

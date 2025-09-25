@@ -31,7 +31,15 @@
  * @author Adeel Asghar <adeel.asghar@liu.se>
  */
 
+// #include "zmq.h"
+
+#ifndef OMEditself
 #include "zmq.h"
+#else
+#include "3rdParty/libzmq/include/zmq.h"
+#endif
+
+
 #include "OMSSimulationOutputWidget.h"
 #include "Util/Helper.h"
 #include "MainWindow.h"

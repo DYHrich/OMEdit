@@ -38,7 +38,12 @@
 #undef smooth
 
 extern "C" {
+#ifndef DISABLE_META_MODELICA
 #include "meta/meta_modelica.h"
+#else
+#include"SimulationRuntime/c/gc/omc_gc.h"
+#include"SimulationRuntime/c/openmodelica_types.h"
+#endif
 }
 
 #include "Util/StringHandler.h"

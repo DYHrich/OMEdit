@@ -12,6 +12,7 @@ if(MINGW)
 endif()
 
 omc_add_subdirectory(Debugger/Parser)
+omc_add_subdirectory(3rdParty/open62541)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -144,6 +145,18 @@ set(OMEDITLIB_SOURCES Util/Helper.cpp
                       Animation/AbstractVisualizer.cpp
                       Animation/Shape.cpp
                       Animation/Vector.cpp
+                      SimulationRuntime/c/gc/memory_pool.c
+                      SimulationRuntime/c/gc/omc_gc.c
+                      SimulationRuntime/c/util/omc_init.h
+                      SimulationRuntime/c/util/omc_error.c
+                      SimulationRuntime/c/util/omc_file.c
+                      SimulationRuntime/c/util/omc_msvc.c
+                      SimulationRuntime/c/util/omc_numbers.c
+                      SimulationRuntime/c/util/read_csv.c
+                      SimulationRuntime/c/util/read_matlab4.c
+                      SimulationRuntime/c/util/simulation_options.c
+                      SimulationRuntime/c/util/libcsv.c
+                      3rdParty/ryu/om_format.c                     
                       resource_omedit.qrc)
 
 set(OMEDITLIB_HEADERS Util/Helper.h
@@ -279,6 +292,28 @@ set(OMEDITLIB_HEADERS Util/Helper.h
                       Animation/AbstractVisualizer.h
                       Animation/Shape.h
                       Animation/Vector.h
+                      SimulationRuntime/c/omc_inline.h
+                      SimulationRuntime/c/omc_simulation_settings.h
+                      SimulationRuntime/c/openmodelica.h
+                      SimulationRuntime/c/openmodelica_types.h
+                      SimulationRuntime/c/gc/memory_pool.h
+                      SimulationRuntime/c/gc/omc_gc.h
+                      SimulationRuntime/c/util/omc_init.h
+                      SimulationRuntime/c/util/omc_error.h
+                      SimulationRuntime/c/util/omc_file.h
+                      SimulationRuntime/c/util/omc_msvc.h
+                      SimulationRuntime/c/util/omc_numbers.h
+                      SimulationRuntime/c/util/read_csv.h
+                      SimulationRuntime/c/util/read_matlab4.h
+                      SimulationRuntime/c/util/simulation_options.h
+                      SimulationRuntime/c/util/libcsv.h
+                      3rdParty/ryu/ryu.h
+                      3rdParty/ryu/om_format.h
+                      3rdParty/libzmq/include/zmq.h
+                      3rdParty/libzmq/include/zmq_utils.h
+                      3rdParty/gc/include/gc.h
+                      3rdParty/gc/include/gc_version.h  
+                      3rdParty/gc/include/gc_config_macros.h                         
                       Animation/rapidxml.hpp)
 
 set(TS_FILES Resources/nls/OMEdit_de.ts
@@ -324,6 +359,9 @@ if(OM_ENABLE_ENCRYPTION)
   target_compile_definitions(OMEditLib PRIVATE OM_ENABLE_ENCRYPTION)
 endif()
 
+# Disable MetaModelica functionality
+target_compile_definitions(OMEditLib PUBLIC DISABLE_META_MODELICA)
+
 target_link_libraries(OMEditLib PUBLIC omedit::config)
 target_link_libraries(OMEditLib PUBLIC OMSimulatorLib)
 target_link_libraries(OMEditLib PUBLIC OMParser)
@@ -342,6 +380,10 @@ else ()
   target_link_libraries(OMEditLib PUBLIC Qt${OM_QT_MAJOR_VERSION}::WebKitWidgets)
 endif ()
 
+# Define OMEditself macro for proper header inclusion
+target_compile_definitions(OMEditLib PRIVATE OMEditself)
+
+
 target_link_libraries(OMEditLib PUBLIC Qt${OM_QT_MAJOR_VERSION}::OpenGL)
 if (OM_QT_MAJOR_VERSION VERSION_GREATER_EQUAL 6)
   target_link_libraries(OMEditLib PUBLIC Qt${OM_QT_MAJOR_VERSION}::OpenGLWidgets)
@@ -353,7 +395,7 @@ if (OM_QT_MAJOR_VERSION VERSION_GREATER_EQUAL 6)
   target_link_libraries(OMEditLib PUBLIC Qt6::Core5Compat)
 endif ()
 
-target_link_libraries(OMEditLib PUBLIC omc::3rd::opcua)
+target_link_libraries(OMEditLib PUBLIC omedit_opcua)
 target_link_libraries(OMEditLib PUBLIC OMPlotLib)
 target_link_libraries(OMEditLib PUBLIC OpenModelicaCompiler)
 target_link_libraries(OMEditLib PUBLIC ${OPENSCENEGRAPH_LIBRARIES})
@@ -375,7 +417,7 @@ if(MINGW)
   target_link_libraries(OMEditLib PUBLIC zlib)
 endif()
 
-target_include_directories(OMEditLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/OMC)
+target_include_directories(OMEditLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/OMC ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Install the translation files
 install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/Resources/nls

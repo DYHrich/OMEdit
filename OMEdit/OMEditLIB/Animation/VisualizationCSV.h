@@ -35,7 +35,12 @@
 #define VISUALIZATIONCSV_H
 
 #include "Visualization.h"
+
+#ifndef OMEditself
 #include "util/read_csv.h"
+#else
+#include "SimulationRuntime/c/util/read_csv.h"
+#endif
 
 class VisualizationCSV : public VisualizationAbstract
 {

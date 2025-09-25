@@ -1,0 +1,3 @@
+if(METIS_INSTALL)
+  install(FILES metis.h DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+endif()

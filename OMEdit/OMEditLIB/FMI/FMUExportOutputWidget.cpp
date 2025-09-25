@@ -36,7 +36,9 @@
 #include "Editors/CEditor.h"
 #include "Editors/TextEditor.h"
 #include "Git/CommitChangesDialog.h"
+#ifndef DISABLE_META_MODELICA
 #include "meta/meta_modelica_builtin.h"
+#endif
 #include <QApplication>
 #include <QObject>
 #include <QHeaderView>
@@ -62,12 +64,16 @@ FmuExportOutputWidget::FmuExportOutputWidget(LibraryTreeItem* pLibraryTreeItem, 
    * fix issue https://github.com/OpenModelica/OpenModelica/issues/12916,
    * use hashed string for fmu tmp directory
   */
+#ifndef DISABLE_META_MODELICA
   if (mTargetLanguage.compare("C") == 0) {
     QString hashedString = QString::number(stringHashDjb2(mmc_mk_scon(mFMUName.toUtf8().constData())));
     mFmuTmpPath = QDir::currentPath().append("/").append(hashedString.left(3)+".fmutmp");
   } else {
     mFmuTmpPath = QDir::currentPath();
   }
+#else
+  QString hashedString = QString::number(qHash(mFMUName));
+#endif
 
   // progress label
   mpProgressLabel = new Label;

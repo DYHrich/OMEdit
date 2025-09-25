@@ -1,0 +1,1 @@
+const char* dummy = "/home/yuhangdai/OpenModelica/OMEdit/OMCompiler/3rdParty/FMIL/fmilib_dummy.c";

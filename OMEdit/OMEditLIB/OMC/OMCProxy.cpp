@@ -42,8 +42,16 @@
 #include "Element/Element.h"
 #include "Options/OptionsDialog.h"
 #include "Modeling/MessagesWidget.h"
+
+#ifndef OMEditself
 #include "util/simulation_options.h"
 #include "util/omc_error.h"
+#else
+#include "SimulationRuntime/c/util/simulation_options.h"
+#include "SimulationRuntime/c/util/omc_error.h"
+#endif
+
+
 #include "FlatModelica/Expression.h"
 
 

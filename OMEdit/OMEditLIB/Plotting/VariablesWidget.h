@@ -38,8 +38,14 @@
 #include "Simulation/SimulationOptions.h"
 #include "PlotWindow.h"
 #include "Animation/TimeManager.h"
+
+#ifndef OMEditself
 #include "util/read_matlab4.h"
 #include "util/read_csv.h"
+#else
+#include "SimulationRuntime/c/util/read_matlab4.h"
+#include "SimulationRuntime/c/util/read_csv.h"
+#endif
 
 #include <QDomDocument>
 #include <QTreeView>

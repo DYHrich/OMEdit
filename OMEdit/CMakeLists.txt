@@ -35,6 +35,7 @@ target_include_directories(omedit_config INTERFACE ${CMAKE_CURRENT_BINARY_DIR})
 omc_add_subdirectory(OMEditLIB)
 omc_add_subdirectory(OMEditGUI)
 
+
 if(OM_OMEDIT_ENABLE_TESTS)
   omc_add_subdirectory(Testsuite)
 endif()
