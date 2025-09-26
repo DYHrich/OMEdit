@@ -44,7 +44,7 @@
 #include <QMessageBox>
 #include <QTextCodec>
 
-#include "../../OMCompiler/Compiler/runtime/settingsimpl.h"
+#include "Compiler/runtime/settingsimpl.h"
 
 /*!
  * \class OMEditApplication

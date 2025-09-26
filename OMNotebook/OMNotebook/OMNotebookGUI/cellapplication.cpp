@@ -49,7 +49,7 @@
 
 #include <cstdlib>
 
-#include "../../../OMCompiler/Compiler/runtime/settingsimpl.h"
+#include "../../../OMEdit/OMEditLIB/Compiler/runtime/settingsimpl.h"
 
 namespace IAEX
 {

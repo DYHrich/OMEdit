@@ -167,7 +167,18 @@ if(OM_ENABLE_ENCRYPTION)
   omc_add_subdirectory(OMEncryption)
 endif()
 
-omc_add_subdirectory(OMCompiler)
+#omc_add_subdirectory(OMCompiler)
+
+# 为被禁用的OMCompiler创建替代目标
+# 创建空的接口库作为替代目标
+add_library(OpenModelicaCompiler_stub INTERFACE)
+add_library(omc_simrt_runtime_stub INTERFACE)
+add_library(omc_3rd_omantlr3_stub INTERFACE)
+
+# 创建别名以匹配原始目标名称
+add_library(OpenModelicaCompiler ALIAS OpenModelicaCompiler_stub)
+add_library(omc::simrt::runtime ALIAS omc_simrt_runtime_stub)
+add_library(omc::3rd::omantlr3 ALIAS omc_3rd_omantlr3_stub)
 
 if(OM_ENABLE_GUI_CLIENTS)
   # select qt version 5/6
@@ -175,9 +186,9 @@ if(OM_ENABLE_GUI_CLIENTS)
 
   omc_add_subdirectory(OMParser)
   omc_add_subdirectory(OMPlot)
-  omc_add_subdirectory(OMShell)
-  omc_add_subdirectory(OMNotebook)
-  omc_add_subdirectory(OMSimulator)
+# omc_add_subdirectory(OMShell)
+# omc_add_subdirectory(OMNotebook)
+# omc_add_subdirectory(OMSimulator)
   omc_add_subdirectory(OMEdit)
   omc_add_subdirectory(OMSens_Qt)
 endif()

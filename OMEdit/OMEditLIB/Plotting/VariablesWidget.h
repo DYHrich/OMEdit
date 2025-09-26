@@ -37,7 +37,9 @@
 
 #include "Simulation/SimulationOptions.h"
 #include "PlotWindow.h"
+
 #include "Animation/TimeManager.h"
+
 
 #ifndef OMEditself
 #include "util/read_matlab4.h"

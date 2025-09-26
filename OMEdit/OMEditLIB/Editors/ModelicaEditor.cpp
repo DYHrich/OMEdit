@@ -38,7 +38,9 @@
 #include "Modeling/LibraryTreeWidget.h"
 #include "Modeling/ModelWidgetContainer.h"
 #include "Options/OptionsDialog.h"
+#ifndef OM_DISABLE_DEBUG
 #include "Debugger/Breakpoints/BreakpointMarker.h"
+#endif
 #include "Util/Helper.h"
 #include "Options/NotificationsDialog.h"
 
@@ -60,12 +62,14 @@ ModelicaEditor::ModelicaEditor(QWidget *pParent)
 {
   mpPlainTextEdit->setCanHaveBreakpoints(true);
   mpPlainTextEdit->setCompletionCharacters(".");
+#ifndef OM_DISABLE_DEBUG
   /* set the document marker */
   if (isModelicaModelInPackageOneFile()) {
     mpDocumentMarker = new DocumentMarker(mpPlainTextEdit->document(), mpModelWidget->getLibraryTreeItem()->mClassInformation.lineNumberStart);
   } else {
     mpDocumentMarker = new DocumentMarker(mpPlainTextEdit->document());
   }
+#endif
 }
 
 /*!
@@ -641,6 +645,8 @@ void ModelicaEditor::contentsHasChanged(int position, int charsRemoved, int char
         contentsChanged();
         setTextChanged(true);
       }
+
+#ifndef OM_DISABLE_DEBUG
       /* Keep the line numbers and the block information for the line breakpoints updated */
       if (charsRemoved != 0) {
         mpDocumentMarker->updateBreakpointsLineNumber();
@@ -656,6 +662,7 @@ void ModelicaEditor::contentsHasChanged(int position, int charsRemoved, int char
           mpDocumentMarker->updateBreakpointsBlock(posBlock);
         }
       }
+#endif
     }
   }
 }

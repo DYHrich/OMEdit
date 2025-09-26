@@ -37,7 +37,11 @@
 #include "Modeling/ModelWidgetContainer.h"
 #include "Modeling/DocumentationWidget.h"
 #include "Util/Helper.h"
-#include "Debugger/Breakpoints/BreakpointsWidget.h"
+
+#ifndef OM_DISABLE_DEBUG
+#include "Debugger/Breakpoints/BreakpointMarker.h"
+#endif
+
 #include "Util/ResourceCache.h"
 
 #include <QMenu>
@@ -189,14 +193,18 @@ bool TabSettings::cursorIsAtBeginningOfLine(const QTextCursor &cursor)
   return (cursor.position() - cursor.block().position() <= fns);
 }
 
+
 TextBlockUserData::~TextBlockUserData()
 {
+#ifndef OM_DISABLE_DEBUG
   TextMarks marks = _marks;
   _marks.clear();
   foreach (ITextMark *mk, marks) {
     mk->removeFromEditor();
   }
+#endif
 }
+
 
 /*!
  * \brief TextBlockUserData::checkOpenParenthesis
@@ -941,6 +949,7 @@ void PlainTextEdit::lineNumberAreaPaintEvent(QPaintEvent *event)
       blockNumber = nextVisibleBlockNumber;
       continue;
     }
+#ifndef OM_DISABLE_DEBUG
     /* paint breakpoints */
     TextBlockUserData *pTextBlockUserData = static_cast<TextBlockUserData*>(block.userData());
     if (pTextBlockUserData && canHaveBreakpoints()) {
@@ -952,6 +961,7 @@ void PlainTextEdit::lineNumberAreaPaintEvent(QPaintEvent *event)
         xoffset += 2;
       }
     }
+#endif
     /* paint line numbers */
     if (block.isVisible() && bottom >= event->rect().top()) {
       QString number;
@@ -1236,6 +1246,7 @@ void PlainTextEdit::ensureCursorVisible()
  */
 void PlainTextEdit::toggleBreakpoint(const QString fileName, int lineNumber)
 {
+#ifndef OM_DISABLE_DEBUG
   BreakpointsTreeModel *pBreakpointsTreeModel = MainWindow::instance()->getBreakpointsWidget()->getBreakpointsTreeModel();
   BreakpointMarker *pBreakpointMarker = pBreakpointsTreeModel->findBreakpointMarker(fileName, lineNumber);
   if (!pBreakpointMarker) {
@@ -1250,6 +1261,7 @@ void PlainTextEdit::toggleBreakpoint(const QString fileName, int lineNumber)
     mpBaseEditor->getDocumentMarker()->removeMark(pBreakpointMarker);
     pBreakpointsTreeModel->removeBreakpoint(pBreakpointMarker);
   }
+#endif
 }
 
 /*!

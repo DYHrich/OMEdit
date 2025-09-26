@@ -37,7 +37,7 @@
 
 #include <cmath>
 
-#include <util/rtclock.h>
+#include "../SimulationRuntime/c/util/rtclock.h"
 
 #include <QTimer>
 

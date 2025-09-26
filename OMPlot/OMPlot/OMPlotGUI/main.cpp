@@ -40,7 +40,7 @@
 #include "PlotApplication.h"
 #include "PlotWindowContainer.h"
 
-#include "util/omc_error.h"
+#include "../../../OMEdit/OMEditLIB/SimulationRuntime/c/util/omc_error.h"
 
 #include <QMessageBox>
 #include <QDir>

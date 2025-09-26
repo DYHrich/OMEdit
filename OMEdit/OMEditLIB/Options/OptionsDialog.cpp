@@ -43,7 +43,11 @@
 #include "Modeling/MessagesWidget.h"
 #include "Plotting/PlotWindowContainer.h"
 #include "Plotting/VariablesWidget.h"
+
+#ifndef OM_DISABLE_DEBUG
 #include "Debugger/StackFrames/StackFramesWidget.h"
+#endif
+
 #include "Editors/HTMLEditor.h"
 #include "Simulation/TranslationFlagsWidget.h"
 #include <limits>
@@ -2815,6 +2819,7 @@ void OptionsDialog::saveCRMLSettings()
   */
 void OptionsDialog::saveDebuggerSettings()
 {
+#ifndef OM_DISABLE_DEBUG
   mpSettings->beginGroup("algorithmicDebugger");
   const QString GDBPath = mpDebuggerPage->getGDBPath();
   if (GDBPath.isEmpty() || GDBPath.compare(Utilities::getGDBPath()) == 0) {
@@ -2850,6 +2855,7 @@ void OptionsDialog::saveDebuggerSettings()
   } else {
     mpSettings->setValue("displayUnknownFrames", displayUnknownFrames);
   }
+
   MainWindow::instance()->getStackFramesWidget()->getStackFramesTreeWidget()->updateStackFrames();
 
   bool clearOutputOnNewRun = mpDebuggerPage->getClearOutputOnNewRunCheckBox()->isChecked();
@@ -2885,6 +2891,7 @@ void OptionsDialog::saveDebuggerSettings()
     MainWindow::instance()->getOMCProxy()->setCommandLineOptions("-d=infoXmlOperations");
   }
   mpSettings->endGroup();
+#endif
 }
 
 /*!

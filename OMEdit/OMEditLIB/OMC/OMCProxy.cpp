@@ -151,6 +151,7 @@ OMCProxy::OMCProxy(threadData_t* threadData, QWidget *pParent)
                                       << "clear"
                                       << "clearProgram";
   mLoadModelError = false;
+
   //start the server
   if(!initializeOMC(threadData)) {  // if we are unable to start OMC. Exit the application.
     MainWindow::instance()->setExitApplicationStatus(true);

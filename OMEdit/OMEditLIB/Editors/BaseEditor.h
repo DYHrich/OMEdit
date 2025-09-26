@@ -34,7 +34,9 @@
 #ifndef BASEEDITOR_H
 #define BASEEDITOR_H
 
+#ifndef OM_DISABLE_DEBUG
 #include "Debugger/Breakpoints/BreakpointMarker.h"
+#endif
 
 #include <QDialog>
 #include <QComboBox>
@@ -42,6 +44,12 @@
 #include <QCheckBox>
 #include <QToolButton>
 #include <QStandardItemModel>
+#include <QPlainTextEdit>
+#include <QTextBlockUserData>
+#include <QPlainTextDocumentLayout>
+#include <QWidget>
+#include <QFrame>
+#include <QCompleter>
 
 class ModelWidget;
 class InfoBar;
@@ -109,7 +117,8 @@ public:
     , mLeadingSpaces(-1)
   {}
   ~TextBlockUserData();
-
+  
+#ifndef OM_DISABLE_DEBUG
   inline TextMarks marks() const { return _marks; }
   inline void addMark(ITextMark *mark) { _marks += mark; }
   inline bool removeMark(ITextMark *mark) { return _marks.removeAll(mark); }
@@ -122,6 +131,7 @@ public:
     }
     _marks.clear();
   }
+#endif
 
   void setParentheses(const Parentheses &parentheses) {mParentheses = parentheses;}
   Parentheses parentheses() {return mParentheses;}
@@ -157,7 +167,9 @@ public:
   inline void setLeadingSpaces(int leadingSpaces) {mLeadingSpaces = leadingSpaces;}
   inline int getLeadingSpaces() {return mLeadingSpaces;}
 private:
+#ifndef OM_DISABLE_DEBUG
   TextMarks _marks;
+#endif
   Parentheses mParentheses;
   int mFoldingIndent;
   bool mFolded;
@@ -330,7 +342,9 @@ public:
   QAction* getToggleBreakpointAction() {return mpToggleBreakpointAction;}
   QAction* getFoldAllAction() {return mpFoldAllAction;}
   QAction* getUnFoldAllAction() {return mpUnFoldAllAction;}
+#ifndef OM_DISABLE_DEBUG
   DocumentMarker* getDocumentMarker() {return mpDocumentMarker;}
+#endif
   void setForceSetPlainText(bool forceSetPlainText) {mForceSetPlainText = forceSetPlainText;}
   virtual void popUpCompleter () = 0;
   virtual QString wordUnderCursor();
@@ -357,7 +371,9 @@ protected:
   QAction *mpToggleCommentSelectionAction;
   QAction *mpFoldAllAction;
   QAction *mpUnFoldAllAction;
+#ifndef OM_DISABLE_DEBUG
   DocumentMarker *mpDocumentMarker = nullptr;
+#endif
   bool mForceSetPlainText;
   QPoint mContextMenuStartPosition;
   bool mContextMenuStartPositionValid = false;

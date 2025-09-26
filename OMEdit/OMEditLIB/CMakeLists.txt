@@ -11,7 +11,7 @@ if(MINGW)
   find_package(binutils REQUIRED)
 endif()
 
-omc_add_subdirectory(Debugger/Parser)
+#omc_add_subdirectory(Debugger/Parser)
 omc_add_subdirectory(3rdParty/open62541)
 
 set(CMAKE_AUTOMOC ON)
@@ -94,17 +94,17 @@ set(OMEDITLIB_SOURCES Util/Helper.cpp
                       TransformationalDebugger/OMDumpXML.cpp
                       TransformationalDebugger/diff_match_patch.cpp
                       TransformationalDebugger/TransformationsWidget.cpp
-                      Debugger/GDB/CommandFactory.cpp
-                      Debugger/GDB/GDBAdapter.cpp
-                      Debugger/StackFrames/StackFramesWidget.cpp
-                      Debugger/Locals/LocalsWidget.cpp
-                      Debugger/Locals/ModelicaValue.cpp
-                      Debugger/Breakpoints/BreakpointMarker.cpp
-                      Debugger/Breakpoints/BreakpointsWidget.cpp
-                      Debugger/Breakpoints/BreakpointDialog.cpp
-                      Debugger/DebuggerConfigurationsDialog.cpp
-                      Debugger/Attach/AttachToProcessDialog.cpp
-                      Debugger/Attach/ProcessListModel.cpp
+#                      Debugger/GDB/CommandFactory.cpp
+#                      Debugger/GDB/GDBAdapter.cpp
+#                      Debugger/StackFrames/StackFramesWidget.cpp
+#                      Debugger/Locals/LocalsWidget.cpp
+#                      Debugger/Locals/ModelicaValue.cpp
+#                      Debugger/Breakpoints/BreakpointMarker.cpp
+#                      Debugger/Breakpoints/BreakpointsWidget.cpp
+#                      Debugger/Breakpoints/BreakpointDialog.cpp
+#                      Debugger/DebuggerConfigurationsDialog.cpp
+#                      Debugger/Attach/AttachToProcessDialog.cpp
+#                      Debugger/Attach/ProcessListModel.cpp
                       CrashReport/backtrace.c
                       CrashReport/GDBBacktrace.cpp
                       CrashReport/CrashReportDialog.cpp
@@ -124,27 +124,28 @@ set(OMEDITLIB_SOURCES Util/Helper.cpp
                       OMS/SystemSimulationInformationDialog.cpp
                       OMS/OMSSimulationDialog.cpp
                       OMS/OMSSimulationOutputWidget.cpp
-                      Animation/TimeManager.cpp
+#                      Animation/TimeManager.cpp
                       Util/ResourceCache.cpp
                       Util/NetworkAccessManager.cpp
                       Util/GitHubArtifactDownloader.cpp
                       FlatModelica/Expression.cpp
                       FlatModelica/ExpressionFuncs.cpp
                       FlatModelica/Parser.cpp
-                      Animation/OpenGLWidget.cpp
-                      Animation/AbstractAnimationWindow.cpp
-                      Animation/ViewerWidget.cpp
-                      Animation/AnimationWindow.cpp
-                      Animation/ExtraShapes.cpp
-                      Animation/Visualization.cpp
-                      Animation/VisualizationMAT.cpp
-                      Animation/VisualizationCSV.cpp
-                      Animation/VisualizationFMU.cpp
-                      Animation/FMUSettingsDialog.cpp
-                      Animation/FMUWrapper.cpp
-                      Animation/AbstractVisualizer.cpp
-                      Animation/Shape.cpp
-                      Animation/Vector.cpp
+                      Animation/TimeManager.cpp
+#                      Animation/OpenGLWidget.cpp
+#                      Animation/AbstractAnimationWindow.cpp
+#                      Animation/ViewerWidget.cpp
+#                      Animation/AnimationWindow.cpp
+#                      Animation/ExtraShapes.cpp
+#                      Animation/Visualization.cpp
+#                      Animation/VisualizationMAT.cpp
+#                      Animation/VisualizationCSV.cpp
+#                      Animation/VisualizationFMU.cpp
+#                      Animation/FMUSettingsDialog.cpp
+#                      Animation/FMUWrapper.cpp
+#                      Animation/AbstractVisualizer.cpp
+#                      Animation/Shape.cpp
+#                      Animation/Vector.cpp
                       SimulationRuntime/c/gc/memory_pool.c
                       SimulationRuntime/c/gc/omc_gc.c
                       SimulationRuntime/c/util/omc_init.h
@@ -156,7 +157,9 @@ set(OMEDITLIB_SOURCES Util/Helper.cpp
                       SimulationRuntime/c/util/read_matlab4.c
                       SimulationRuntime/c/util/simulation_options.c
                       SimulationRuntime/c/util/libcsv.c
-                      3rdParty/ryu/om_format.c                     
+                      SimulationRuntime/c/util/rtclock.c
+#                      3rdParty/ryu/om_format.c
+                      Compiler/runtime/settingsimpl.c                     
                       resource_omedit.qrc)
 
 set(OMEDITLIB_HEADERS Util/Helper.h
@@ -237,17 +240,17 @@ set(OMEDITLIB_HEADERS Util/Helper.h
                       TransformationalDebugger/OMDumpXML.cpp
                       TransformationalDebugger/diff_match_patch.h
                       TransformationalDebugger/TransformationsWidget.h
-                      Debugger/GDB/CommandFactory.h
-                      Debugger/GDB/GDBAdapter.h
-                      Debugger/StackFrames/StackFramesWidget.h
-                      Debugger/Locals/LocalsWidget.h
-                      Debugger/Locals/ModelicaValue.h
-                      Debugger/Breakpoints/BreakpointMarker.h
-                      Debugger/Breakpoints/BreakpointsWidget.h
-                      Debugger/Breakpoints/BreakpointDialog.h
-                      Debugger/DebuggerConfigurationsDialog.h
-                      Debugger/Attach/AttachToProcessDialog.h
-                      Debugger/Attach/ProcessListModel.h
+#                      Debugger/GDB/CommandFactory.h
+#                      Debugger/GDB/GDBAdapter.h
+#                      Debugger/StackFrames/StackFramesWidget.h
+#                      Debugger/Locals/LocalsWidget.h
+#                      Debugger/Locals/ModelicaValue.h
+#                      Debugger/Breakpoints/BreakpointMarker.h
+#                      Debugger/Breakpoints/BreakpointsWidget.h
+#                      Debugger/Breakpoints/BreakpointDialog.h
+#                      Debugger/DebuggerConfigurationsDialog.h
+#                      Debugger/Attach/AttachToProcessDialog.h
+#                      Debugger/Attach/ProcessListModel.h
                       CrashReport/backtrace.h
                       CrashReport/GDBBacktrace.h
                       CrashReport/CrashReportDialog.h
@@ -268,7 +271,6 @@ set(OMEDITLIB_HEADERS Util/Helper.h
                       OMS/SystemSimulationInformationDialog.h
                       OMS/OMSSimulationDialog.h
                       OMS/OMSSimulationOutputWidget.h
-                      Animation/TimeManager.h
                       Interfaces/InformationInterface.h
                       Interfaces/ModelInterface.h
                       Util/ResourceCache.h
@@ -277,21 +279,22 @@ set(OMEDITLIB_HEADERS Util/Helper.h
                       FlatModelica/Expression.h
                       FlatModelica/ExpressionFuncs.h
                       FlatModelica/Parser.h
-                      Animation/OpenGLWidget.h
-                      Animation/AbstractAnimationWindow.h
-                      Animation/ViewerWidget.h
-                      Animation/AnimationWindow.h
-                      Animation/AnimationUtil.h
-                      Animation/ExtraShapes.h
-                      Animation/Visualization.h
-                      Animation/VisualizationMAT.h
-                      Animation/VisualizationCSV.h
-                      Animation/VisualizationFMU.h
-                      Animation/FMUSettingsDialog.h
-                      Animation/FMUWrapper.h
-                      Animation/AbstractVisualizer.h
-                      Animation/Shape.h
-                      Animation/Vector.h
+                      Animation/TimeManager.h                      
+#                      Animation/OpenGLWidget.h
+#                      Animation/AbstractAnimationWindow.h
+#                      Animation/ViewerWidget.h
+#                      Animation/AnimationWindow.h
+#                      Animation/AnimationUtil.h
+#                      Animation/ExtraShapes.h
+#                      Animation/Visualization.h
+#                      Animation/VisualizationMAT.h
+#                      Animation/VisualizationCSV.h
+#                      Animation/VisualizationFMU.h
+#                      Animation/FMUSettingsDialog.h
+#                      Animation/FMUWrapper.h
+#                      Animation/AbstractVisualizer.h
+#                      Animation/Shape.h
+#                      Animation/Vector.h
                       SimulationRuntime/c/omc_inline.h
                       SimulationRuntime/c/omc_simulation_settings.h
                       SimulationRuntime/c/openmodelica.h
@@ -307,13 +310,22 @@ set(OMEDITLIB_HEADERS Util/Helper.h
                       SimulationRuntime/c/util/read_matlab4.h
                       SimulationRuntime/c/util/simulation_options.h
                       SimulationRuntime/c/util/libcsv.h
-                      3rdParty/ryu/ryu.h
-                      3rdParty/ryu/om_format.h
-                      3rdParty/libzmq/include/zmq.h
-                      3rdParty/libzmq/include/zmq_utils.h
-                      3rdParty/gc/include/gc.h
-                      3rdParty/gc/include/gc_version.h  
-                      3rdParty/gc/include/gc_config_macros.h                         
+                      SimulationRuntime/c/util/rtclock.h
+#                      3rdParty/ryu/ryu.h
+#                      3rdParty/ryu/om_format.h
+#                      3rdParty/libzmq/include/zmq.h
+#                      3rdParty/libzmq/include/zmq_utils.h
+#                      3rdParty/gc/include/gc.h
+#                      3rdParty/gc/include/gc_version.h  
+#                      3rdParty/gc/include/gc_config_macros.h
+#                      Compiler/boot/tarball-include/OpenModelicaBootstrappingHeader.h
+                      Compiler/runtime/settingsimpl.h
+                      Compiler/omc_config.h
+                      Compiler/omc_config.unix.h
+#                      Compiler/OpenModelicaBootstrappingHeader.h
+#                      Compiler/revision.h
+                      OMSimulator/OMSimulator.h
+                      OMSimulator/Types.h                         
                       Animation/rapidxml.hpp)
 
 set(TS_FILES Resources/nls/OMEdit_de.ts
@@ -343,6 +355,41 @@ set(OMEDITLIB_HEADERS ${OMEDITLIB_HEADERS} ${CMAKE_CURRENT_SOURCE_DIR}/OMC/Pytho
 set(OMEDITLIB_SOURCES ${OMEDITLIB_SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/OMC/OpenModelicaScriptingAPIQt.cpp)
 set(OMEDITLIB_SOURCES ${OMEDITLIB_SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/OMC/PythonEnv.cpp)
 
+
+# libzmq
+set (ZMQ_BUILD_TESTS OFF CACHE BOOL "Build the tests for ZeroMQ")
+set (ZMQ_BUILD_STATIC ON CACHE BOOL "Whether or not to build the static object")
+set (ZMQ_BUILD_SHARED OFF CACHE BOOL "Whether or not to build the shared object")
+omc_add_subdirectory(3rdParty/libzmq)
+add_library(omedit::3rd::libzmq ALIAS libzmq-static)
+
+#gc
+option(GC_BUILD_SHARED_LIBS "Build shared libraries" ON)
+option(enable_java_finalization "Support for java finalization" OFF)
+option(enable_gcj_support "Support for gcj" OFF)
+option(enable_large_config "Optimize for large heap or root set" ON)
+omc_add_subdirectory(3rdParty/gc)
+target_include_directories(omcgc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/gc/include)
+# make sure every target that links to gc-lib has its sources
+# compiled with -DGC_WIN32_PTHREADS (for pthreads on Windows, i.e., OMDev or MSVC)
+# Or -DGC_THREADS (for auto detection on other systems.)
+# Even on Windows OM uses pthreads. GC_WIN32_PTHREADS is required
+# to be set explicitly for use of pthreads API on Windows.
+if(WIN32)
+    target_compile_definitions(omcgc PUBLIC GC_WIN32_PTHREADS)
+else()
+    target_compile_definitions(omcgc PUBLIC GC_THREADS)
+endif()
+
+# Finally add an alias for clarity purposes.
+add_library(omedit::3rd::omcgc ALIAS omcgc)
+
+
+# ryu
+omc_add_subdirectory(3rdParty/ryu)
+add_library(omedit::3rd::ryu ALIAS ryu)
+
+
 add_library(OMEditLib STATIC ${OMEDITLIB_SOURCES} ${OMEDITLIB_HEADERS} ${OMEDITLIB_TRANSLATIONS})
 
 target_include_directories(OMEditLib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
@@ -361,11 +408,18 @@ endif()
 
 # Disable MetaModelica functionality
 target_compile_definitions(OMEditLib PUBLIC DISABLE_META_MODELICA)
+target_compile_definitions(OMEditLib PUBLIC OM_DISABLE_ANIMA)
+target_compile_definitions(OMEditLib PUBLIC OM_DISABLE_DEBUG)
+target_compile_definitions(OMEditLib PUBLIC WITHOUT_OSG)
 
+
+target_link_libraries(OMEditLib PUBLIC omedit::3rd::libzmq)
 target_link_libraries(OMEditLib PUBLIC omedit::config)
-target_link_libraries(OMEditLib PUBLIC OMSimulatorLib)
+target_link_libraries(OMEditLib PUBLIC omedit::3rd::omcgc)
+target_link_libraries(OMEditLib PUBLIC omedit::3rd::ryu)
+# target_link_libraries(OMEditLib PUBLIC OMSimulatorLib)  # 注释掉这行
 target_link_libraries(OMEditLib PUBLIC OMParser)
-target_link_libraries(OMEditLib PUBLIC omedit::debugger::parser)
+#target_link_libraries(OMEditLib PUBLIC omedit::debugger::parser)
 target_link_libraries(OMEditLib PUBLIC Qt${OM_QT_MAJOR_VERSION}::Xml)
 target_link_libraries(OMEditLib PUBLIC Qt${OM_QT_MAJOR_VERSION}::Widgets)
 target_link_libraries(OMEditLib PUBLIC Qt${OM_QT_MAJOR_VERSION}::PrintSupport)
@@ -397,7 +451,7 @@ endif ()
 
 target_link_libraries(OMEditLib PUBLIC omedit_opcua)
 target_link_libraries(OMEditLib PUBLIC OMPlotLib)
-target_link_libraries(OMEditLib PUBLIC OpenModelicaCompiler)
+#target_link_libraries(OMEditLib PUBLIC OpenModelicaCompiler)
 target_link_libraries(OMEditLib PUBLIC ${OPENSCENEGRAPH_LIBRARIES})
 target_link_libraries(OMEditLib PUBLIC OpenGL::GL)
 

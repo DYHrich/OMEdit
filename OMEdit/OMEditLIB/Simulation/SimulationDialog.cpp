@@ -37,13 +37,20 @@
 #include "Modeling/ItemDelegate.h"
 #include "Options/OptionsDialog.h"
 #include "Modeling/MessagesWidget.h"
+
+#ifndef OM_DISABLE_DEBUG
 #include "Debugger/GDB/GDBAdapter.h"
+#endif
+
 #include "Simulation/SimulationOutputWidget.h"
 #include "Plotting/VariablesWidget.h"
 #include "Plotting/PlotWindowContainer.h"
 #include "Modeling/Commands.h"
+#include "../SimulationRuntime/c/util/simulation_options.h"
+#ifndef OM_DISABLE_ANIMA
 #if !defined(WITHOUT_OSG)
 #include "Animation/AnimationWindow.h"
+#endif
 #endif
 #include "TranslationFlagsWidget.h"
 
@@ -1792,6 +1799,7 @@ void SimulationDialog::reSimulate(SimulationOptions simulationOptions)
 
 void SimulationDialog::showAlgorithmicDebugger(SimulationOptions simulationOptions)
 {
+#ifndef OM_DISABLE_DEBUG
   // if not build only and launch the algorithmic debugger is true
   if (!simulationOptions.getBuildOnly() && simulationOptions.getLaunchAlgorithmicDebugger()) {
     QString fileName = simulationOptions.getOutputFileName();
@@ -1802,6 +1810,7 @@ void SimulationDialog::showAlgorithmicDebugger(SimulationOptions simulationOptio
 #if defined(_WIN32)
     fileName = fileName.append(".exe");
 #endif
+
     // start the debugger
     if (GDBAdapter::instance()->isGDBRunning()) {
       QMessageBox::information(this, QString(Helper::applicationName).append(" - ").append(Helper::information),
@@ -1812,6 +1821,7 @@ void SimulationDialog::showAlgorithmicDebugger(SimulationOptions simulationOptio
       MainWindow::instance()->switchToAlgorithmicDebuggingPerspectiveSlot();
     }
   }
+#endif
 }
 
 /*!
@@ -1965,6 +1975,7 @@ void SimulationDialog::simulationProcessFinished(SimulationOptions simulationOpt
       // stay in current perspective and show variable browser
       MainWindow::instance()->getVariablesDockWidget()->show();
     }
+#ifndef OM_DISABLE_ANIMA
 #if !defined(WITHOUT_OSG)
     // if simulated with animation then open the animation directly.
     if (simulationOptions.getSimulateWithAnimation()) {
@@ -1979,6 +1990,7 @@ void SimulationDialog::simulationProcessFinished(SimulationOptions simulationOpt
         MessagesWidget::instance()->addGUIMessage(MessageItem(MessageItem::Modelica, msg, Helper::scriptingKind, Helper::notificationLevel));
       }
     }
+#endif
 #endif
     pVariablesWidget->insertVariablesItemsToTree(simulationOptions.getFullResultFileName(), workingDirectory, QStringList(), simulationOptions);
     /* issue #11811

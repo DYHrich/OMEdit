@@ -4,7 +4,9 @@
 
 #include <QOpenGLContext> // must be first include to fix undefined GLDEBUGPROC
 #include <QtCore>
-#include "OpenModelicaScriptingAPI.h"
+#include "../SimulationRuntime/c/gc/omc_gc.h"
+#include "../SimulationRuntime/c/openmodelica_types.h"
+// #include "OpenModelicaScriptingAPI.h"
 
 class OMCInterface : public QObject
 {

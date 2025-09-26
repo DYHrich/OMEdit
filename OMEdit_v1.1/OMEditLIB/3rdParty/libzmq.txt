@@ -1,1 +1,0 @@
-git subtree add --prefix libzmq https://github.com/zeromq/libzmq master

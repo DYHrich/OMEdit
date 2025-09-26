@@ -1,1 +1,0 @@
-void nm_test_func(){} int main(){nm_test_func();return 0;}

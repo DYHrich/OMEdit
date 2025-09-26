@@ -35,8 +35,10 @@
 #ifndef PLOTWINDOWCONTAINER_H
 #define PLOTWINDOWCONTAINER_H
 
+#ifndef OM_DISABLE_ANIMA
 #if !defined(WITHOUT_OSG)
 #include "Animation/AnimationWindow.h"
+#endif
 #endif
 
 #include "Util/Utilities.h"
@@ -56,8 +58,10 @@ public:
   OMPlot::PlotWindow* getCurrentWindow();
   QMdiSubWindow* getPlotSubWindowFromMdi();
   OMPlot::PlotWindow* getInteractiveWindow(QString targetWindow);
+#ifndef OM_DISABLE_ANIMA
 #if !defined(WITHOUT_OSG)
   AnimationWindow* getCurrentAnimationWindow();
+#endif
 #endif
   QMdiSubWindow* getDiagramSubWindowFromMdi();
   DiagramWindow* getDiagramWindow() {return mpDiagramWindow;}

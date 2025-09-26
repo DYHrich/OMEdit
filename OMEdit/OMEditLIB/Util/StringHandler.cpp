@@ -42,7 +42,7 @@
 #ifndef OMEditself
 #include "om_format.h"
 #else
-#include "3rdParty/ryu/om_format.h"
+#include "../3rdParty/ryu/ryu/om_format.h"
 #endif
 
 

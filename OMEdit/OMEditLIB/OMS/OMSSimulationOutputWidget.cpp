@@ -36,7 +36,7 @@
 #ifndef OMEditself
 #include "zmq.h"
 #else
-#include "3rdParty/libzmq/include/zmq.h"
+#include "../3rdParty/libzmq/include/zmq.h"
 #endif
 
 

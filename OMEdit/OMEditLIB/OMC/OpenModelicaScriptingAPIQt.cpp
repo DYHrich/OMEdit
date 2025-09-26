@@ -2935,15 +2935,15 @@ QString OMCInterface::getModelInstanceAnnotation(QString className, QList<QStrin
   commandLog.append(prettyPrint ? "true" : "false");
   emit logCommand("getModelInstanceAnnotation("+commandLog+")");
 
-  QByteArray className_utf8 = className.toUtf8();
-  void *filter_lst = mmc_mk_nil();
-  for (int filter_i = filter.size()-1; filter_i>=0; filter_i--) {
-    QString filter_elt = filter[filter_i];
-    QByteArray filter_elt_utf8 = filter_elt.toUtf8();
-    filter_lst = mmc_mk_cons(mmc_mk_scon(filter_elt_utf8.constData()), filter_lst);
-  }
+  // QByteArray className_utf8 = className.toUtf8();
+  // void *filter_lst = mmc_mk_nil();
+  // for (int filter_i = filter.size()-1; filter_i>=0; filter_i--) {
+  //   QString filter_elt = filter[filter_i];
+  //   QByteArray filter_elt_utf8 = filter_elt.toUtf8();
+  //   filter_lst = mmc_mk_cons(mmc_mk_scon(filter_elt_utf8.constData()), filter_lst);
+  // }
   QString result;
-  void *result_mm = NULL;
+  // void *result_mm = NULL;
 
   try {
     
@@ -3522,14 +3522,14 @@ QList<QString > OMCInterface::sortStrings(QList<QString > arr)
   commandLog.append("}");
   emit logCommand("sortStrings("+commandLog+")");
 
-  void *arr_lst = mmc_mk_nil();
-  for (int arr_i = arr.size()-1; arr_i>=0; arr_i--) {
-    QString arr_elt = arr[arr_i];
-    QByteArray arr_elt_utf8 = arr_elt.toUtf8();
-    arr_lst = mmc_mk_cons(mmc_mk_scon(arr_elt_utf8.constData()), arr_lst);
-  }
+  // void *arr_lst = mmc_mk_nil();
+  // for (int arr_i = arr.size()-1; arr_i>=0; arr_i--) {
+  //   QString arr_elt = arr[arr_i];
+  //   QByteArray arr_elt_utf8 = arr_elt.toUtf8();
+  //   arr_lst = mmc_mk_cons(mmc_mk_scon(arr_elt_utf8.constData()), arr_lst);
+  // }
   QList<QString > result;
-  void *result_mm = NULL;
+  // void *result_mm = NULL;
 
   try {
     
@@ -3593,18 +3593,18 @@ modelica_boolean OMCInterface::checkInterfaceOfPackages(QString cl, QList<QList<
   commandLog.append("}");
   emit logCommand("checkInterfaceOfPackages("+commandLog+")");
 
-  QByteArray cl_utf8 = cl.toUtf8();
-  void *dependencyMatrix_lst = mmc_mk_nil();
-  for (int dependencyMatrix_i = dependencyMatrix.size()-1; dependencyMatrix_i>=0; dependencyMatrix_i--) {
-    QList<QString > dependencyMatrix_elt = dependencyMatrix[dependencyMatrix_i];
-    void *dependencyMatrix_elt_lst = mmc_mk_nil();
-    for (int dependencyMatrix_elt_i = dependencyMatrix_elt.size()-1; dependencyMatrix_elt_i>=0; dependencyMatrix_elt_i--) {
-      QString dependencyMatrix_elt_elt = dependencyMatrix_elt[dependencyMatrix_elt_i];
-      QByteArray dependencyMatrix_elt_elt_utf8 = dependencyMatrix_elt_elt.toUtf8();
-      dependencyMatrix_elt_lst = mmc_mk_cons(mmc_mk_scon(dependencyMatrix_elt_elt_utf8.constData()), dependencyMatrix_elt_lst);
-    }
-    dependencyMatrix_lst = mmc_mk_cons(dependencyMatrix_elt_lst, dependencyMatrix_lst);
-  }
+  // QByteArray cl_utf8 = cl.toUtf8();
+  // void *dependencyMatrix_lst = mmc_mk_nil();
+  // for (int dependencyMatrix_i = dependencyMatrix.size()-1; dependencyMatrix_i>=0; dependencyMatrix_i--) {
+  //   QList<QString > dependencyMatrix_elt = dependencyMatrix[dependencyMatrix_i];
+  //   void *dependencyMatrix_elt_lst = mmc_mk_nil();
+  //   for (int dependencyMatrix_elt_i = dependencyMatrix_elt.size()-1; dependencyMatrix_elt_i>=0; dependencyMatrix_elt_i--) {
+  //     QString dependencyMatrix_elt_elt = dependencyMatrix_elt[dependencyMatrix_elt_i];
+  //     QByteArray dependencyMatrix_elt_elt_utf8 = dependencyMatrix_elt_elt.toUtf8();
+  //     dependencyMatrix_elt_lst = mmc_mk_cons(mmc_mk_scon(dependencyMatrix_elt_elt_utf8.constData()), dependencyMatrix_elt_lst);
+  //   }
+  //   dependencyMatrix_lst = mmc_mk_cons(dependencyMatrix_elt_lst, dependencyMatrix_lst);
+  // }
   modelica_boolean result;
 
   try {
@@ -3844,14 +3844,14 @@ QList<modelica_boolean > OMCInterface::runScriptParallel(QList<QString > scripts
   commandLog.append(useThreads ? "true" : "false");
   emit logCommand("runScriptParallel("+commandLog+")");
 
-  void *scripts_lst = mmc_mk_nil();
-  for (int scripts_i = scripts.size()-1; scripts_i>=0; scripts_i--) {
-    QString scripts_elt = scripts[scripts_i];
-    QByteArray scripts_elt_utf8 = scripts_elt.toUtf8();
-    scripts_lst = mmc_mk_cons(mmc_mk_scon(scripts_elt_utf8.constData()), scripts_lst);
-  }
+  // void *scripts_lst = mmc_mk_nil();
+  // for (int scripts_i = scripts.size()-1; scripts_i>=0; scripts_i--) {
+  //   QString scripts_elt = scripts[scripts_i];
+  //   QByteArray scripts_elt_utf8 = scripts_elt.toUtf8();
+  //   scripts_lst = mmc_mk_cons(mmc_mk_scon(scripts_elt_utf8.constData()), scripts_lst);
+  // }
   QList<modelica_boolean > result;
-  void *result_mm = NULL;
+  // void *result_mm = NULL;
 
   try {
     
@@ -3896,17 +3896,12 @@ modelica_integer OMCInterface::numProcessors()
   modelica_integer result;
 
   try {
-    
-
-
 
     // 使用python接口替换原有的omc_OpenModelicaScriptingAPI接口
     PythonEnv& python_env = PythonEnv::get_instance();
     std::string command = "numProcessors()";
     py::object python_result = python_env.send_expression_object(command, false);
     result = PythonQtConverter::ToModelicaInteger(python_result);
-
-
 
     
   } catch(std::exception &exception) {
@@ -7384,30 +7379,30 @@ modelica_boolean OMCInterface::setComponentProperties(QString className, QString
   commandLog.append("}");
   emit logCommand("setComponentProperties("+commandLog+")");
 
-  QByteArray className_utf8 = className.toUtf8();
-  QByteArray componentName_utf8 = componentName.toUtf8();
-  void *prefixArray_lst = mmc_mk_nil();
-  for (int prefixArray_i = prefixArray.size()-1; prefixArray_i>=0; prefixArray_i--) {
-    modelica_boolean prefixArray_elt = prefixArray[prefixArray_i];
-    prefixArray_lst = mmc_mk_cons(mmc_mk_icon(prefixArray_elt), prefixArray_lst);
-  }
-  void *variability_lst = mmc_mk_nil();
-  for (int variability_i = variability.size()-1; variability_i>=0; variability_i--) {
-    QString variability_elt = variability[variability_i];
-    QByteArray variability_elt_utf8 = variability_elt.toUtf8();
-    variability_lst = mmc_mk_cons(mmc_mk_scon(variability_elt_utf8.constData()), variability_lst);
-  }
-  void *innerOuter_lst = mmc_mk_nil();
-  for (int innerOuter_i = innerOuter.size()-1; innerOuter_i>=0; innerOuter_i--) {
-    modelica_boolean innerOuter_elt = innerOuter[innerOuter_i];
-    innerOuter_lst = mmc_mk_cons(mmc_mk_icon(innerOuter_elt), innerOuter_lst);
-  }
-  void *direction_lst = mmc_mk_nil();
-  for (int direction_i = direction.size()-1; direction_i>=0; direction_i--) {
-    QString direction_elt = direction[direction_i];
-    QByteArray direction_elt_utf8 = direction_elt.toUtf8();
-    direction_lst = mmc_mk_cons(mmc_mk_scon(direction_elt_utf8.constData()), direction_lst);
-  }
+  // QByteArray className_utf8 = className.toUtf8();
+  // QByteArray componentName_utf8 = componentName.toUtf8();
+  // void *prefixArray_lst = mmc_mk_nil();
+  // for (int prefixArray_i = prefixArray.size()-1; prefixArray_i>=0; prefixArray_i--) {
+  //   modelica_boolean prefixArray_elt = prefixArray[prefixArray_i];
+  //   prefixArray_lst = mmc_mk_cons(mmc_mk_icon(prefixArray_elt), prefixArray_lst);
+  // }
+  // void *variability_lst = mmc_mk_nil();
+  // for (int variability_i = variability.size()-1; variability_i>=0; variability_i--) {
+  //   QString variability_elt = variability[variability_i];
+  //   QByteArray variability_elt_utf8 = variability_elt.toUtf8();
+  //   variability_lst = mmc_mk_cons(mmc_mk_scon(variability_elt_utf8.constData()), variability_lst);
+  // }
+  // void *innerOuter_lst = mmc_mk_nil();
+  // for (int innerOuter_i = innerOuter.size()-1; innerOuter_i>=0; innerOuter_i--) {
+  //   modelica_boolean innerOuter_elt = innerOuter[innerOuter_i];
+  //   innerOuter_lst = mmc_mk_cons(mmc_mk_icon(innerOuter_elt), innerOuter_lst);
+  // }
+  // void *direction_lst = mmc_mk_nil();
+  // for (int direction_i = direction.size()-1; direction_i>=0; direction_i--) {
+  //   QString direction_elt = direction[direction_i];
+  //   QByteArray direction_elt_utf8 = direction_elt.toUtf8();
+  //   direction_lst = mmc_mk_cons(mmc_mk_scon(direction_elt_utf8.constData()), direction_lst);
+  // }
   modelica_boolean result;
 
   try {
@@ -8543,17 +8538,17 @@ OMCInterface::diffSimulationResults_res OMCInterface::diffSimulationResults(QStr
   commandLog.append(keepEqualResults ? "true" : "false");
   emit logCommand("diffSimulationResults("+commandLog+")");
 
-  QByteArray actualFile_utf8 = actualFile.toUtf8();
-  QByteArray expectedFile_utf8 = expectedFile.toUtf8();
-  QByteArray diffPrefix_utf8 = diffPrefix.toUtf8();
-  void *vars_lst = mmc_mk_nil();
-  for (int vars_i = vars.size()-1; vars_i>=0; vars_i--) {
-    QString vars_elt = vars[vars_i];
-    QByteArray vars_elt_utf8 = vars_elt.toUtf8();
-    vars_lst = mmc_mk_cons(mmc_mk_scon(vars_elt_utf8.constData()), vars_lst);
-  }
+  // QByteArray actualFile_utf8 = actualFile.toUtf8();
+  // QByteArray expectedFile_utf8 = expectedFile.toUtf8();
+  // QByteArray diffPrefix_utf8 = diffPrefix.toUtf8();
+  // void *vars_lst = mmc_mk_nil();
+  // for (int vars_i = vars.size()-1; vars_i>=0; vars_i--) {
+  //   QString vars_elt = vars[vars_i];
+  //   QByteArray vars_elt_utf8 = vars_elt.toUtf8();
+  //   vars_lst = mmc_mk_cons(mmc_mk_scon(vars_elt_utf8.constData()), vars_lst);
+  // }
   diffSimulationResults_res result;
-  void *out2_mm = NULL;
+  // void *out2_mm = NULL;
 
   try {
     
@@ -8603,15 +8598,15 @@ modelica_real OMCInterface::deltaSimulationResults(QString filename, QString ref
   commandLog.append("}");
   emit logCommand("deltaSimulationResults("+commandLog+")");
 
-  QByteArray filename_utf8 = filename.toUtf8();
-  QByteArray reffilename_utf8 = reffilename.toUtf8();
-  QByteArray method_utf8 = method.toUtf8();
-  void *vars_lst = mmc_mk_nil();
-  for (int vars_i = vars.size()-1; vars_i>=0; vars_i--) {
-    QString vars_elt = vars[vars_i];
-    QByteArray vars_elt_utf8 = vars_elt.toUtf8();
-    vars_lst = mmc_mk_cons(mmc_mk_scon(vars_elt_utf8.constData()), vars_lst);
-  }
+  // QByteArray filename_utf8 = filename.toUtf8();
+  // QByteArray reffilename_utf8 = reffilename.toUtf8();
+  // QByteArray method_utf8 = method.toUtf8();
+  // void *vars_lst = mmc_mk_nil();
+  // for (int vars_i = vars.size()-1; vars_i>=0; vars_i--) {
+  //   QString vars_elt = vars[vars_i];
+  //   QByteArray vars_elt_utf8 = vars_elt.toUtf8();
+  //   vars_lst = mmc_mk_cons(mmc_mk_scon(vars_elt_utf8.constData()), vars_lst);
+  // }
   modelica_real result;
 
   try {
@@ -8666,17 +8661,17 @@ QList<QString > OMCInterface::compareSimulationResults(QString filename, QString
   commandLog.append("}");
   emit logCommand("compareSimulationResults("+commandLog+")");
 
-  QByteArray filename_utf8 = filename.toUtf8();
-  QByteArray reffilename_utf8 = reffilename.toUtf8();
-  QByteArray logfilename_utf8 = logfilename.toUtf8();
-  void *vars_lst = mmc_mk_nil();
-  for (int vars_i = vars.size()-1; vars_i>=0; vars_i--) {
-    QString vars_elt = vars[vars_i];
-    QByteArray vars_elt_utf8 = vars_elt.toUtf8();
-    vars_lst = mmc_mk_cons(mmc_mk_scon(vars_elt_utf8.constData()), vars_lst);
-  }
+  // QByteArray filename_utf8 = filename.toUtf8();
+  // QByteArray reffilename_utf8 = reffilename.toUtf8();
+  // QByteArray logfilename_utf8 = logfilename.toUtf8();
+  // void *vars_lst = mmc_mk_nil();
+  // for (int vars_i = vars.size()-1; vars_i>=0; vars_i--) {
+  //   QString vars_elt = vars[vars_i];
+  //   QByteArray vars_elt_utf8 = vars_elt.toUtf8();
+  //   vars_lst = mmc_mk_cons(mmc_mk_scon(vars_elt_utf8.constData()), vars_lst);
+  // }
   QList<QString > result;
-  void *result_mm = NULL;
+  // void *result_mm = NULL;
 
   try {
     
@@ -8738,14 +8733,14 @@ modelica_boolean OMCInterface::filterSimulationResults(QString inFile, QString o
   commandLog.append(hintReadAllVars ? "true" : "false");
   emit logCommand("filterSimulationResults("+commandLog+")");
 
-  QByteArray inFile_utf8 = inFile.toUtf8();
-  QByteArray outFile_utf8 = outFile.toUtf8();
-  void *vars_lst = mmc_mk_nil();
-  for (int vars_i = vars.size()-1; vars_i>=0; vars_i--) {
-    QString vars_elt = vars[vars_i];
-    QByteArray vars_elt_utf8 = vars_elt.toUtf8();
-    vars_lst = mmc_mk_cons(mmc_mk_scon(vars_elt_utf8.constData()), vars_lst);
-  }
+  // QByteArray inFile_utf8 = inFile.toUtf8();
+  // QByteArray outFile_utf8 = outFile.toUtf8();
+  // void *vars_lst = mmc_mk_nil();
+  // for (int vars_i = vars.size()-1; vars_i>=0; vars_i--) {
+  //   QString vars_elt = vars[vars_i];
+  //   QByteArray vars_elt_utf8 = vars_elt.toUtf8();
+  //   vars_lst = mmc_mk_cons(mmc_mk_scon(vars_elt_utf8.constData()), vars_lst);
+  // }
   modelica_boolean result;
 
   try {
@@ -8913,23 +8908,23 @@ modelica_boolean OMCInterface::plotAll(modelica_boolean externalWindow, QString 
   commandLog.append(forceOMPlot ? "true" : "false");
   emit logCommand("plotAll("+commandLog+")");
 
-  QByteArray fileName_utf8 = fileName.toUtf8();
-  QByteArray title_utf8 = title.toUtf8();
-  QByteArray grid_utf8 = grid.toUtf8();
-  QByteArray xLabel_utf8 = xLabel.toUtf8();
-  QByteArray yLabel_utf8 = yLabel.toUtf8();
-  void *xRange_lst = mmc_mk_nil();
-  for (int xRange_i = xRange.size()-1; xRange_i>=0; xRange_i--) {
-    modelica_real xRange_elt = xRange[xRange_i];
-    xRange_lst = mmc_mk_cons(mmc_mk_rcon(xRange_elt), xRange_lst);
-  }
-  void *yRange_lst = mmc_mk_nil();
-  for (int yRange_i = yRange.size()-1; yRange_i>=0; yRange_i--) {
-    modelica_real yRange_elt = yRange[yRange_i];
-    yRange_lst = mmc_mk_cons(mmc_mk_rcon(yRange_elt), yRange_lst);
-  }
-  QByteArray legendPosition_utf8 = legendPosition.toUtf8();
-  QByteArray footer_utf8 = footer.toUtf8();
+  // QByteArray fileName_utf8 = fileName.toUtf8();
+  // QByteArray title_utf8 = title.toUtf8();
+  // QByteArray grid_utf8 = grid.toUtf8();
+  // QByteArray xLabel_utf8 = xLabel.toUtf8();
+  // QByteArray yLabel_utf8 = yLabel.toUtf8();
+  // void *xRange_lst = mmc_mk_nil();
+  // for (int xRange_i = xRange.size()-1; xRange_i>=0; xRange_i--) {
+  //   modelica_real xRange_elt = xRange[xRange_i];
+  //   xRange_lst = mmc_mk_cons(mmc_mk_rcon(xRange_elt), xRange_lst);
+  // }
+  // void *yRange_lst = mmc_mk_nil();
+  // for (int yRange_i = yRange.size()-1; yRange_i>=0; yRange_i--) {
+  //   modelica_real yRange_elt = yRange[yRange_i];
+  //   yRange_lst = mmc_mk_cons(mmc_mk_rcon(yRange_elt), yRange_lst);
+  // }
+  // QByteArray legendPosition_utf8 = legendPosition.toUtf8();
+  // QByteArray footer_utf8 = footer.toUtf8();
   modelica_boolean result;
 
   try {
@@ -9879,18 +9874,18 @@ QString OMCInterface::buildModelFMU(QString className, QString version, QString 
   commandLog.append(includeResources ? "true" : "false");
   emit logCommand("buildModelFMU("+commandLog+")");
 
-  QByteArray className_utf8 = className.toUtf8();
-  QByteArray version_utf8 = version.toUtf8();
-  QByteArray fmuType_utf8 = fmuType.toUtf8();
-  QByteArray fileNamePrefix_utf8 = fileNamePrefix.toUtf8();
-  void *platforms_lst = mmc_mk_nil();
-  for (int platforms_i = platforms.size()-1; platforms_i>=0; platforms_i--) {
-    QString platforms_elt = platforms[platforms_i];
-    QByteArray platforms_elt_utf8 = platforms_elt.toUtf8();
-    platforms_lst = mmc_mk_cons(mmc_mk_scon(platforms_elt_utf8.constData()), platforms_lst);
-  }
+  // QByteArray className_utf8 = className.toUtf8();
+  // QByteArray version_utf8 = version.toUtf8();
+  // QByteArray fmuType_utf8 = fmuType.toUtf8();
+  // QByteArray fileNamePrefix_utf8 = fileNamePrefix.toUtf8();
+  // void *platforms_lst = mmc_mk_nil();
+  // for (int platforms_i = platforms.size()-1; platforms_i>=0; platforms_i--) {
+  //   QString platforms_elt = platforms[platforms_i];
+  //   QByteArray platforms_elt_utf8 = platforms_elt.toUtf8();
+  //   platforms_lst = mmc_mk_cons(mmc_mk_scon(platforms_elt_utf8.constData()), platforms_lst);
+  // }
   QString result;
-  void *result_mm = NULL;
+  // void *result_mm = NULL;
 
   try {
     
@@ -9943,16 +9938,16 @@ modelica_boolean OMCInterface::translateModelFMU(QString className, QString vers
   commandLog.append(includeResources ? "true" : "false");
   emit logCommand("translateModelFMU("+commandLog+")");
 
-  QByteArray className_utf8 = className.toUtf8();
-  QByteArray version_utf8 = version.toUtf8();
-  QByteArray fmuType_utf8 = fmuType.toUtf8();
-  QByteArray fileNamePrefix_utf8 = fileNamePrefix.toUtf8();
-  void *platforms_lst = mmc_mk_nil();
-  for (int platforms_i = platforms.size()-1; platforms_i>=0; platforms_i--) {
-    QString platforms_elt = platforms[platforms_i];
-    QByteArray platforms_elt_utf8 = platforms_elt.toUtf8();
-    platforms_lst = mmc_mk_cons(mmc_mk_scon(platforms_elt_utf8.constData()), platforms_lst);
-  }
+  // QByteArray className_utf8 = className.toUtf8();
+  // QByteArray version_utf8 = version.toUtf8();
+  // QByteArray fmuType_utf8 = fmuType.toUtf8();
+  // QByteArray fileNamePrefix_utf8 = fileNamePrefix.toUtf8();
+  // void *platforms_lst = mmc_mk_nil();
+  // for (int platforms_i = platforms.size()-1; platforms_i>=0; platforms_i--) {
+  //   QString platforms_elt = platforms[platforms_i];
+  //   QByteArray platforms_elt_utf8 = platforms_elt.toUtf8();
+  //   platforms_lst = mmc_mk_cons(mmc_mk_scon(platforms_elt_utf8.constData()), platforms_lst);
+  // }
   modelica_boolean result;
 
   try {
@@ -10119,23 +10114,23 @@ OMCInterface::solveLinearSystem_res OMCInterface::solveLinearSystem(QList<QList<
   commandLog.append("}");
   emit logCommand("solveLinearSystem("+commandLog+")");
 
-  void *A_lst = mmc_mk_nil();
-  for (int A_i = A.size()-1; A_i>=0; A_i--) {
-    QList<modelica_real > A_elt = A[A_i];
-    void *A_elt_lst = mmc_mk_nil();
-    for (int A_elt_i = A_elt.size()-1; A_elt_i>=0; A_elt_i--) {
-      modelica_real A_elt_elt = A_elt[A_elt_i];
-      A_elt_lst = mmc_mk_cons(mmc_mk_rcon(A_elt_elt), A_elt_lst);
-    }
-    A_lst = mmc_mk_cons(A_elt_lst, A_lst);
-  }
-  void *B_lst = mmc_mk_nil();
-  for (int B_i = B.size()-1; B_i>=0; B_i--) {
-    modelica_real B_elt = B[B_i];
-    B_lst = mmc_mk_cons(mmc_mk_rcon(B_elt), B_lst);
-  }
+  // void *A_lst = mmc_mk_nil();
+  // for (int A_i = A.size()-1; A_i>=0; A_i--) {
+  //   QList<modelica_real > A_elt = A[A_i];
+  //   void *A_elt_lst = mmc_mk_nil();
+  //   for (int A_elt_i = A_elt.size()-1; A_elt_i>=0; A_elt_i--) {
+  //     modelica_real A_elt_elt = A_elt[A_elt_i];
+  //     A_elt_lst = mmc_mk_cons(mmc_mk_rcon(A_elt_elt), A_elt_lst);
+  //   }
+  //   A_lst = mmc_mk_cons(A_elt_lst, A_lst);
+  // }
+  // void *B_lst = mmc_mk_nil();
+  // for (int B_i = B.size()-1; B_i>=0; B_i--) {
+  //   modelica_real B_elt = B[B_i];
+  //   B_lst = mmc_mk_cons(mmc_mk_rcon(B_elt), B_lst);
+  // }
   solveLinearSystem_res result;
-  void *out1_mm = NULL;
+  // void *out1_mm = NULL;
 
   try {
     
@@ -11074,14 +11069,14 @@ modelica_boolean OMCInterface::loadModel(QString className, QList<QString > prio
   commandLog.append(requireExactVersion ? "true" : "false");
   emit logCommand("loadModel("+commandLog+")");
 
-  QByteArray className_utf8 = className.toUtf8();
-  void *priorityVersion_lst = mmc_mk_nil();
-  for (int priorityVersion_i = priorityVersion.size()-1; priorityVersion_i>=0; priorityVersion_i--) {
-    QString priorityVersion_elt = priorityVersion[priorityVersion_i];
-    QByteArray priorityVersion_elt_utf8 = priorityVersion_elt.toUtf8();
-    priorityVersion_lst = mmc_mk_cons(mmc_mk_scon(priorityVersion_elt_utf8.constData()), priorityVersion_lst);
-  }
-  QByteArray languageStandard_utf8 = languageStandard.toUtf8();
+  // QByteArray className_utf8 = className.toUtf8();
+  // void *priorityVersion_lst = mmc_mk_nil();
+  // for (int priorityVersion_i = priorityVersion.size()-1; priorityVersion_i>=0; priorityVersion_i--) {
+  //   QString priorityVersion_elt = priorityVersion[priorityVersion_i];
+  //   QByteArray priorityVersion_elt_utf8 = priorityVersion_elt.toUtf8();
+  //   priorityVersion_lst = mmc_mk_cons(mmc_mk_scon(priorityVersion_elt_utf8.constData()), priorityVersion_lst);
+  // }
+  // QByteArray languageStandard_utf8 = languageStandard.toUtf8();
   modelica_boolean result;
 
   try {
@@ -13807,14 +13802,14 @@ QList<modelica_integer > OMCInterface::system_parallel(QList<QString > callStr, 
   commandLog.append(QString::number(numThreads));
   emit logCommand("system__parallel("+commandLog+")");
 
-  void *callStr_lst = mmc_mk_nil();
-  for (int callStr_i = callStr.size()-1; callStr_i>=0; callStr_i--) {
-    QString callStr_elt = callStr[callStr_i];
-    QByteArray callStr_elt_utf8 = callStr_elt.toUtf8();
-    callStr_lst = mmc_mk_cons(mmc_mk_scon(callStr_elt_utf8.constData()), callStr_lst);
-  }
+  // void *callStr_lst = mmc_mk_nil();
+  // for (int callStr_i = callStr.size()-1; callStr_i>=0; callStr_i--) {
+  //   QString callStr_elt = callStr[callStr_i];
+  //   QByteArray callStr_elt_utf8 = callStr_elt.toUtf8();
+  //   callStr_lst = mmc_mk_cons(mmc_mk_scon(callStr_elt_utf8.constData()), callStr_lst);
+  // }
   QList<modelica_integer > result;
-  void *result_mm = NULL;
+  // void *result_mm = NULL;
 
   try {
     
@@ -14360,13 +14355,13 @@ modelica_boolean OMCInterface::loadFiles(QList<QString > fileNames, QString enco
   commandLog.append(allowWithin ? "true" : "false");
   emit logCommand("loadFiles("+commandLog+")");
 
-  void *fileNames_lst = mmc_mk_nil();
-  for (int fileNames_i = fileNames.size()-1; fileNames_i>=0; fileNames_i--) {
-    QString fileNames_elt = fileNames[fileNames_i];
-    QByteArray fileNames_elt_utf8 = fileNames_elt.toUtf8();
-    fileNames_lst = mmc_mk_cons(mmc_mk_scon(fileNames_elt_utf8.constData()), fileNames_lst);
-  }
-  QByteArray encoding_utf8 = encoding.toUtf8();
+  // void *fileNames_lst = mmc_mk_nil();
+  // for (int fileNames_i = fileNames.size()-1; fileNames_i>=0; fileNames_i--) {
+  //   QString fileNames_elt = fileNames[fileNames_i];
+  //   QByteArray fileNames_elt_utf8 = fileNames_elt.toUtf8();
+  //   fileNames_lst = mmc_mk_cons(mmc_mk_scon(fileNames_elt_utf8.constData()), fileNames_lst);
+  // }
+  // QByteArray encoding_utf8 = encoding.toUtf8();
   modelica_boolean result;
 
   try {

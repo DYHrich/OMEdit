@@ -44,14 +44,20 @@
 #include "Modeling/ModelicaClassDialog.h"
 #include "OMS/ModelDialog.h"
 #include "CRML/CRMLTranslateAsDialog.h"
+
+#ifndef OM_DISABLE_DEBUG
 #include "Debugger/GDB/GDBAdapter.h"
 #include "Debugger/StackFrames/StackFramesWidget.h"
 #include "Debugger/Locals/LocalsWidget.h"
+#endif
+
 #include "Modeling/DocumentationWidget.h"
 #include "Plotting/VariablesWidget.h"
 #include "Search/SearchWidget.h"
+#ifndef OM_DISABLE_ANIMA
 #if !defined(WITHOUT_OSG)
 #include "Animation/ViewerWidget.h"
+#endif
 #endif
 #include "Util/Helper.h"
 #include "Simulation/ArchivedSimulationsWidget.h"
@@ -59,8 +65,12 @@
 #include "CRML/CRMLTranslatorOutputWidget.h"
 #include "OMS/OMSSimulationOutputWidget.h"
 #include "OMS/OMSSimulationDialog.h"
+
+#ifndef OM_DISABLE_DEBUG
 #include "Debugger/DebuggerConfigurationsDialog.h"
 #include "Debugger/Attach/AttachToProcessDialog.h"
+#endif
+
 #include "TransformationalDebugger/TransformationsWidget.h"
 #include "Options/NotificationsDialog.h"
 #include "Simulation/SimulationDialog.h"
@@ -280,6 +290,7 @@ void MainWindow::setUpMainWindow(threadData_t *threadData)
   mpSearchDockWidget->setWidget(mpSearchWidget);
   addDockWidget(Qt::BottomDockWidgetArea, mpSearchDockWidget);
   mpSearchDockWidget->hide();
+#ifndef OM_DISABLE_DEBUG
   // create the GDB adapter instance
   GDBAdapter::create();
   // create stack frames widget
@@ -320,6 +331,7 @@ void MainWindow::setUpMainWindow(threadData_t *threadData)
   addDockWidget(Qt::BottomDockWidgetArea, mpGDBLoggerDockWidget);
   // put the GDB logger dock widget and output dock widget as tabbed items.
   tabifyDockWidget(mpGDBLoggerDockWidget, mpTargetOutputDockWidget);
+#endif
   // create an object of DocumentationWidget
   mpDocumentationWidget = new DocumentationWidget(this);
   // Create DocumentationWidget dock
@@ -433,6 +445,7 @@ void MainWindow::setUpMainWindow(threadData_t *threadData)
     restoreState(pSettings->value("application/windowState").toByteArray());
     restoreGeometry(pSettings->value("application/geometry").toByteArray());
     mRestoringState = false;
+#ifndef OM_DISABLE_DEBUG
     pSettings->beginGroup("algorithmicDebugger");
     /* restore stackframes list and locals columns width */
     mpStackFramesWidget->getStackFramesTreeWidget()->header()->restoreState(pSettings->value("stackFramesTreeState").toByteArray());
@@ -446,6 +459,7 @@ void MainWindow::setUpMainWindow(threadData_t *threadData)
         markMessagesTabWidgetChangedForNewMessage(StringHandler::NoOMError);
       }
     }
+#endif
   }
   switchToWelcomePerspective();
   // read last Open Directory location
@@ -822,10 +836,12 @@ void MainWindow::beforeClosingMainWindow()
   mTransformationsWidgetHash.clear();
   /* save stackframes list and locals columns width */
   pSettings->beginGroup("algorithmicDebugger");
+#ifndef OM_DISABLE_DEBUG
   pSettings->setValue("stackFramesTreeState", mpStackFramesWidget->getStackFramesTreeWidget()->header()->saveState());
   pSettings->setValue("breakPointsTreeState", mpBreakpointsWidget->getBreakpointsTreeView()->header()->saveState());
   pSettings->setValue("localsTreeState", mpLocalsWidget->getLocalsTreeView()->header()->saveState());
   pSettings->endGroup();
+#endif
   /* save OMEdit MainWindow geometry state */
   pSettings->setValue("application/geometry", saveGeometry());
   pSettings->setValue("application/windowState", saveState());
@@ -859,8 +875,10 @@ void MainWindow::beforeClosingMainWindow()
   delete pSettings;
   // delete the OptionsDialog object
   OptionsDialog::destroy();
+#ifndef OM_DISABLE_DEBUG
   // delete the GDBAdapter object
   GDBAdapter::destroy();
+#endif
   // delete the GitCommands object
   GitCommands::destroy();
   // delete the searchwidget object to call the destructor, to cancel the search operation running on seperate thread
@@ -968,6 +986,7 @@ void MainWindow::simulateWithAlgorithmicDebugger(LibraryTreeItem *pLibraryTreeIt
   mpSimulationDialog->directSimulate(pLibraryTreeItem, false, true, false, false);
 }
 
+#ifndef OM_DISABLE_ANIMA
 #if !defined(WITHOUT_OSG)
 void MainWindow::simulateWithAnimation(LibraryTreeItem *pLibraryTreeItem)
 {
@@ -982,6 +1001,7 @@ void MainWindow::simulateWithAnimation(LibraryTreeItem *pLibraryTreeItem)
   }
   mpSimulationDialog->directSimulate(pLibraryTreeItem, false, false, true, false);
 }
+#endif
 #endif
 
 void MainWindow::simulationSetup(LibraryTreeItem *pLibraryTreeItem)
@@ -2508,6 +2528,7 @@ void MainWindow::simulateModel()
  */
 void MainWindow::simulateModelWithAnimation()
 {
+#ifndef OM_DISABLE_ANIMA
 #if !defined(WITHOUT_OSG)
   ModelWidget *pModelWidget = mpModelWidgetContainer->getCurrentModelWidget();
   if (pModelWidget) {
@@ -2515,6 +2536,7 @@ void MainWindow::simulateModelWithAnimation()
   }
 #else
   assert(0);
+#endif
 #endif
 }
 
@@ -3272,6 +3294,7 @@ void MainWindow::updateModelSwitcherMenu(QMdiSubWindow *pActivatedWindow)
  */
 void MainWindow::runDebugConfiguration()
 {
+#ifndef OM_DISABLE_DEBUG
   QAction *pAction = qobject_cast<QAction*>(sender());
   QToolButton *pToolButton = qobject_cast<QToolButton*>(sender());
 
@@ -3297,6 +3320,7 @@ void MainWindow::runDebugConfiguration()
     }
     pDebuggerConfigurationsDialog->deleteLater();
   }
+#endif
 }
 
 /*!
@@ -3433,6 +3457,7 @@ void MainWindow::messagesTabBarClicked(int index)
  */
 void MainWindow::messagesDockWidgetVisibilityChanged(bool visible)
 {
+#ifndef OM_DISABLE_ANIMA
   // Avoid firing a paint event on the animation window when the main window is closing
   if (MessagesWidget::instance()) {
     mpMessagesTabWidget->setVisible(!visible);
@@ -3441,6 +3466,7 @@ void MainWindow::messagesDockWidgetVisibilityChanged(bool visible)
       emit resetMessagesTabWidgetNames();
     }
   }
+#endif
 }
 
 /*!
@@ -3542,9 +3568,11 @@ void MainWindow::runCRMLTestsuite()
  */
 void MainWindow::showDebugConfigurationsDialog()
 {
+#ifndef OM_DISABLE_DEBUG
   DebuggerConfigurationsDialog *pDebuggerConfigurationsDialog = new DebuggerConfigurationsDialog(this);
   connect(pDebuggerConfigurationsDialog, SIGNAL(debuggerLaunched()), SLOT(switchToAlgorithmicDebuggingPerspectiveSlot()));
   pDebuggerConfigurationsDialog->exec();
+#endif
 }
 
 /*!
@@ -3554,8 +3582,10 @@ void MainWindow::showDebugConfigurationsDialog()
  */
 void MainWindow::showAttachToProcessDialog()
 {
+#ifndef OM_DISABLE_DEBUG
   AttachToProcessDialog *pAttachToProcessDialog = new AttachToProcessDialog(this);
   pAttachToProcessDialog->exec();
+#endif
 }
 
 /*!
@@ -4968,7 +4998,7 @@ AboutOMEditDialog::AboutOMEditDialog(MainWindow *pMainWindow)
 #else
           "without",
 #endif
-          oms_getVersion(),
+        // oms_getVersion(),
           Helper::OpenModelicaHome);
   // about text label
   Label *pAboutTextLabel = new Label(aboutText);

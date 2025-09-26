@@ -161,6 +161,7 @@ PlotWindow* PlotWindowContainer::getInteractiveWindow(QString targetWindow)
   }
 }
 
+#ifndef OM_DISABLE_ANIMA
 #if !defined(WITHOUT_OSG)
 /*!
  * \brief PlotWindowContainer::getCurrentAnimationWindow
@@ -179,6 +180,7 @@ AnimationWindow* PlotWindowContainer::getCurrentAnimationWindow()
     }
   }
 }
+#endif
 #endif
 
 /*!
@@ -503,12 +505,14 @@ void PlotWindowContainer::addArrayParametricPlotWindow()
   }
 }
 
+
 /*!
  * \brief PlotWindowContainer::addAnimationWindow
  * Adds an animation widget as subwindow
  */
 void PlotWindowContainer::addAnimationWindow()
 {
+#ifndef OM_DISABLE_ANIMA
 #if !defined(WITHOUT_OSG)
   AnimationWindow *pAnimationWindow = new AnimationWindow(this);
   pAnimationWindow->setWindowTitle(getUniqueName("Animation : "));
@@ -524,7 +528,9 @@ void PlotWindowContainer::addAnimationWindow()
 #else
   assert(0);
 #endif
+#endif
 }
+
 
 /*!
  * \brief PlotWindowContainer::addDiagramWindow
