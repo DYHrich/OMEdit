@@ -4312,11 +4312,13 @@ void MainWindow::createMenus()
   pViewWindowsMenu->addAction(mpVariablesDockWidget->toggleViewAction());
   pViewWindowsMenu->addAction(mpMessagesDockWidget->toggleViewAction());
   pViewWindowsMenu->addAction(mpSearchDockWidget->toggleViewAction());
+#ifndef OM_DISABLE_DEBUG
   pViewWindowsMenu->addAction(mpStackFramesDockWidget->toggleViewAction());
   pViewWindowsMenu->addAction(mpBreakpointsDockWidget->toggleViewAction());
   pViewWindowsMenu->addAction(mpLocalsDockWidget->toggleViewAction());
   pViewWindowsMenu->addAction(mpTargetOutputDockWidget->toggleViewAction());
   pViewWindowsMenu->addAction(mpGDBLoggerDockWidget->toggleViewAction());
+#endif
   pViewWindowsMenu->addSeparator();
   pViewWindowsMenu->addAction(mpCloseWindowAction);
   pViewWindowsMenu->addAction(mpCloseAllWindowsAction);
@@ -4505,11 +4507,13 @@ void MainWindow::switchToWelcomePerspective()
   if (OptionsDialog::instance()->getGeneralSettingsPage()->getHideVariablesBrowserCheckBox()->isChecked()) {
     mpVariablesDockWidget->hide();
   }
+#ifndef OM_DISABLE_DEBUG
   mpStackFramesDockWidget->hide();
   mpBreakpointsDockWidget->hide();
   mpLocalsDockWidget->hide();
   mpTargetOutputDockWidget->hide();
   mpGDBLoggerDockWidget->hide();
+#endif
   // show/hide toolbars
   QSettings *pSettings = Utilities::getApplicationSettings();
   pSettings->beginGroup(ToolBars::welcomePerspective);
@@ -4551,11 +4555,13 @@ void MainWindow::switchToModelingPerspective()
   if (tabifiedDockWidgetsList.size() > 0) {
     tabifyDockWidget(tabifiedDockWidgetsList.at(0), mpLibraryDockWidget);
   }
+#ifndef OM_DISABLE_DEBUG
   mpStackFramesDockWidget->hide();
   mpBreakpointsDockWidget->hide();
   mpLocalsDockWidget->hide();
   mpTargetOutputDockWidget->hide();
   mpGDBLoggerDockWidget->hide();
+#endif
 }
 
 /*!

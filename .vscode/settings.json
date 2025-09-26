@@ -141,7 +141,8 @@
     "qfileinfo": "cpp",
     "qtextblockuserdata": "cpp",
     "qplaintextdocumentlayout": "cpp",
-    "qtoolbutton": "cpp"
+    "qtoolbutton": "cpp",
+    "texture": "cpp"
   },
   "debug.allowBreakpointsEverywhere": true
 }

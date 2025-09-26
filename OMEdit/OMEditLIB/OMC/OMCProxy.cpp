@@ -165,6 +165,8 @@ OMCProxy::OMCProxy(threadData_t* threadData, QWidget *pParent)
  */
 OMCProxy::~OMCProxy()
 {
+  delete mpOMCInterface;
+  mpOMCInterface = nullptr;
   // delete the logger widget
   delete mpOMCLoggerWidget;
   if (MainWindow::instance()->isDebug()) {

@@ -11,10 +11,21 @@
 #define slots Q_SLOTS
 #endif
 
+// OMCInterface::OMCInterface(threadData_t *td)
+//   : threadData(td)
+// {
+// }
+
 OMCInterface::OMCInterface(threadData_t *td)
-  : threadData(td)
+  : QObject(nullptr), threadData(td)
 {
+  // 添加调试信息
+  if (!td) {
+    qDebug() << "Warning: OMCInterface initialized with NULL threadData";
+  }
 }
+
+
 QString OMCInterface::oms_getVersion()
 {
   QElapsedTimer commandTime;
@@ -25,19 +36,13 @@ QString OMCInterface::oms_getVersion()
   void *result_mm = NULL;
 
   try {
-    
-
-
 
     // 使用python接口替换原有的omc_OpenModelicaScriptingAPI接口
     PythonEnv& python_env = PythonEnv::get_instance();
     std::string command = "oms__getVersion()";
     py::object python_result = python_env.send_expression_object(command, false);
     result = StringHandler::unparse(PythonQtConverter::ToQString(python_result));
-
-
-
-    
+  
   } catch(std::exception &exception) {
     emit throwException(QString("oms__getVersion failed. %1").arg(exception.what()));
   }
