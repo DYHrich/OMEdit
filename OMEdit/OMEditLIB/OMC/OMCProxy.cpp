@@ -266,6 +266,11 @@ bool OMCProxy::initializeOMC(threadData_t *threadData)
     
     // 通过OMPython设置locale
     QString localeCommand = QString("setCommandLineOptions(\"+locale=%1\")").arg(settingsLocale.name());
+
+    if(!pythonEnv.is_ready()) {
+      std::cerr << "Python environment is not ready" << std::endl;
+      return false;
+    }
     pythonEnv.send_expression_object(localeCommand.toStdString());
     
     // 初始化垃圾收集器（通过OMPython命令）

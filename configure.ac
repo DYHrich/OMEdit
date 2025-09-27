@@ -8,9 +8,13 @@ AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_CPP
 
+
 m4_include([common/m4/pre-commit.m4])
 m4_include([common/m4/ombuilddir.m4])
 m4_include([common/m4/omhome.m4])
+
+FIND_OPENMODELICAHOME
+
 AC_SUBST(RPATH_QMAKE)
 AC_SUBST(SHREXT)
 AC_SUBST(APP)

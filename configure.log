@@ -1,0 +1,180 @@
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables...
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether the compiler supports GNU C... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to enable C11 features... none needed
+checking for g++... g++
+checking whether the compiler supports GNU C++... yes
+checking whether g++ accepts -g... yes
+checking for g++ option to enable C++11 features... none needed
+checking how to run the C preprocessor... gcc -E
+./configure: line 4059: FIND_OPENMODELICAHOME: command not found
+ln: failed to create symbolic link '.git/hooks/pre-commit': File exists
+configure: OpenModelica commit-msg hook has been installed
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... x86_64-pc-linux-gnu
+checking target system type... x86_64-pc-linux-gnu
+build_short: x86_64-linux-gnu
+host_short: x86_64-linux-gnu
+checking if cppruntime is requested... no
+checking for CORBA... none
+configure: "Subproject OMCompiler does not exist"
+configure: "Subproject OMShell does not exist"
+configure.ac:35: warning: The macro `AC_TRY_LINK' is obsolete.
+configure.ac:35: You should run autoupdate.
+./lib/autoconf/general.m4:2920: AC_TRY_LINK is expanded from...
+configure.ac:35: the top level
+configure.ac:38: warning: AC_OUTPUT should be used without arguments.
+configure.ac:38: You should run autoupdate.
+configure: creating ./config.status
+config.status: creating Makefile
+=== configuring in OMPlot (/home/yuhangdai/OpenModelica/OMPlot)
+configure: running /bin/bash ./configure --disable-option-checking '--prefix=/home/yuhangdai/OpenModelica/build'  '--with-ombuilddir=/home/yuhangdai/OpenModelica/build' --cache-file=/dev/null --srcdir=.
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... x86_64-pc-linux-gnu
+checking target system type... x86_64-pc-linux-gnu
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables...
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether the compiler supports GNU C... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to enable C11 features... none needed
+checking for g++... g++
+checking whether the compiler supports GNU C++... yes
+checking whether g++ accepts -g... yes
+checking for g++ option to enable C++11 features... none needed
+checking whether g++ supports C++17 features with -std=c++17... yes
+checking if qt6 is requested... no
+checking for qmake in env.vars QMAKE and QTDIR... /bin/qmake
+checking for qmake arguments... /bin/qmake -qt5
+checking for lrelease... /usr/lib/qt5/bin/lrelease
+build_short: x86_64-linux-gnu
+host_short: x86_64-linux-gnu
+checking for OPENMODELICAHOME... /home/yuhangdai/OpenModelica/build/install_cmake (from environment)
+checking for /home/yuhangdai/OpenModelica/build/install_cmake/lib/omc/ModelicaBuiltin.mo... ok
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating qwt/Makefile.unix
+config.status: creating OMPlot/OMPlotGUI/Makefile.unix
+config.status: creating OMPlot/OMPlotGUI/OMPlotGUI.config
+config.status: creating qwt/qwt.config
+=== configuring in OMEdit (/home/yuhangdai/OpenModelica/OMEdit)
+configure: running /bin/bash ./configure --disable-option-checking '--prefix=/home/yuhangdai/OpenModelica/build'  '--with-ombuilddir=/home/yuhangdai/OpenModelica/build' --cache-file=/dev/null --srcdir=.
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... x86_64-pc-linux-gnu
+checking target system type... x86_64-pc-linux-gnu
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables...
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether the compiler supports GNU C... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to enable C11 features... none needed
+checking for g++... g++
+checking whether the compiler supports GNU C++... yes
+checking whether g++ accepts -g... yes
+checking for g++ option to enable C++11 features... none needed
+checking whether g++ supports C++17 features with -std=c++17... yes
+checking if qt6 is requested... no
+checking for qmake in env.vars QMAKE and QTDIR... /bin/qmake
+checking for qmake arguments... /bin/qmake -qt5
+checking for lrelease... /usr/lib/qt5/bin/lrelease
+build_short: x86_64-linux-gnu
+host_short: x86_64-linux-gnu
+checking for OPENMODELICAHOME... /home/yuhangdai/OpenModelica/build/install_cmake (from environment)
+checking for /home/yuhangdai/OpenModelica/build/install_cmake/lib/omc/ModelicaBuiltin.mo... ok
+checking how to run the C++ preprocessor... g++ -std=c++17 -E
+checking for osg/qt include order bugs (broken OSG version)... OK
+checking for osg/qt broken OpenGL... OK
+checking for osg/qt broken OpenGL... OK
+checking for stdio.h... yes
+checking for stdlib.h... yes
+checking for string.h... yes
+checking for inttypes.h... yes
+checking for stdint.h... yes
+checking for strings.h... yes
+checking for sys/stat.h... yes
+checking for sys/types.h... yes
+checking for unistd.h... yes
+checking for osg/Uniform... yes
+"OSG is enabled"
+checking check if -lboost_regex is needed for OMSimulator... no need for -lboost_regex, std::regex is good enough
+checking for LSB description... Ubuntu 22.04.5 LTS
+checking for revision... OMEdit v1.26.0-dev.290+g40e8913ace
+configure: creating ./config.status
+config.status: creating Makefile.unix
+config.status: creating omedit_config.h
+config.status: creating OMEditLIB/OMEditLIB.unix.config.pri
+config.status: creating OMEditLIB/Debugger/Parser/Makefile.unix
+config.status: creating OMEditLIB/Debugger/Parser/Makefile.lib.unix
+config.status: creating OMEditGUI/OMEditGUI.unix.config.pri
+config.status: creating Testsuite/Makefile.unix
+=== configuring in OMNotebook (/home/yuhangdai/OpenModelica/OMNotebook)
+configure: running /bin/bash ./configure --disable-option-checking '--prefix=/home/yuhangdai/OpenModelica/build'  '--with-ombuilddir=/home/yuhangdai/OpenModelica/build' --cache-file=/dev/null --srcdir=.
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... x86_64-pc-linux-gnu
+checking target system type... x86_64-pc-linux-gnu
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables...
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether the compiler supports GNU C... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to enable C11 features... none needed
+checking for g++... g++
+checking whether the compiler supports GNU C++... yes
+checking whether g++ accepts -g... yes
+checking for g++ option to enable C++11 features... none needed
+checking whether g++ supports C++17 features with -std=c++17... yes
+checking if qt6 is requested... no
+checking for qmake in env.vars QMAKE and QTDIR... /bin/qmake
+checking for qmake arguments... /bin/qmake -qt5
+checking for lrelease... /usr/lib/qt5/bin/lrelease
+build_short: x86_64-linux-gnu
+host_short: x86_64-linux-gnu
+checking for OPENMODELICAHOME... /home/yuhangdai/OpenModelica/build/install_cmake (from environment)
+checking for /home/yuhangdai/OpenModelica/build/install_cmake/lib/omc/ModelicaBuiltin.mo... ok
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating OMNotebook/OMNotebookGUI/Makefile.unix
+config.status: creating OMNotebook/OMNotebookGUI/OMNotebook.config
+config.status: creating OMNotebook/OMNotebookGUI/omc_config.h
+=== configuring in OMSens_Qt (/home/yuhangdai/OpenModelica/OMSens_Qt)
+configure: running /bin/bash ./configure --disable-option-checking '--prefix=/home/yuhangdai/OpenModelica/build'  '--with-ombuilddir=/home/yuhangdai/OpenModelica/build' --cache-file=/dev/null --srcdir=.
+configure: OpenModelica pre-commit hook has been installed
+ln: failed to create symbolic link '/home/yuhangdai/OpenModelica/.git/modules/OMSens_Qt/hooks/pre-commit': File exists
+configure: OpenModelica commit-msg hook has been installed
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... x86_64-pc-linux-gnu
+checking target system type... x86_64-pc-linux-gnu
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables...
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether the compiler supports GNU C... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to enable C11 features... none needed
+checking for g++... g++
+checking whether the compiler supports GNU C++... yes
+checking whether g++ accepts -g... yes
+checking for g++ option to enable C++11 features... none needed
+checking whether g++ supports C++11 features by default... yes
+checking if qt6 is requested... no
+checking for qmake in env.vars QMAKE and QTDIR... /bin/qmake
+checking for qmake arguments... /bin/qmake -qt5
+checking for lrelease... /usr/lib/qt5/bin/lrelease
+configure: creating ./config.status
+config.status: creating Makefile.unix

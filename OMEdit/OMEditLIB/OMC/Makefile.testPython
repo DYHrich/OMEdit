@@ -1,0 +1,53 @@
+# Makefile for testPython
+CXX = g++
+CXXFLAGS = -std=c++17 -Wall -Wextra -O2
+
+# Python相关配置
+PYTHON_VERSION = $(shell python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
+PYTHON_INCLUDE = $(shell python3 -c "import sysconfig; print(sysconfig.get_path('include'))")
+PYTHON_LIB = $(shell python3 -c "import sysconfig; print(sysconfig.get_config_var('LIBDIR'))")
+
+# pybind11配置
+PYBIND11_INCLUDE = $(shell python3 -c "import pybind11; print(pybind11.get_cmake_dir())")/../../../include
+
+# 包含路径
+INCLUDES = -I$(PYTHON_INCLUDE) -I$(PYBIND11_INCLUDE)
+
+# 链接库
+LIBS = -lpython$(PYTHON_VERSION)
+
+# 库路径
+LIBDIRS = -L$(PYTHON_LIB)
+
+# 目标文件
+TARGET = testPython
+SOURCES = testPython.cpp PythonEnv.cpp
+OBJECTS = $(SOURCES:.cpp=.o)
+
+# 默认目标
+all: $(TARGET)
+
+# 编译目标
+$(TARGET): $(OBJECTS)
+	$(CXX) $(OBJECTS) $(LIBDIRS) $(LIBS) -o $(TARGET)
+
+# 编译源文件
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
+
+# 清理
+clean:
+	rm -f $(OBJECTS) $(TARGET)
+
+# 运行测试
+test: $(TARGET)
+	./$(TARGET)
+
+# 显示配置信息
+info:
+	@echo "Python版本: $(PYTHON_VERSION)"
+	@echo "Python包含路径: $(PYTHON_INCLUDE)"
+	@echo "Python库路径: $(PYTHON_LIB)"
+	@echo "pybind11包含路径: $(PYBIND11_INCLUDE)"
+
+.PHONY: all clean test info

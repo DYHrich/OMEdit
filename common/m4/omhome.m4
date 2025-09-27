@@ -7,7 +7,15 @@ echo "build_short: $build_short"
 echo "host_short: $host_short"
 
 AC_SUBST(OPENMODELICAHOME)
-AC_ARG_WITH(openmodelicahome,  [  --with-openmodelicahome=[OPENMODELICAHOME|PREFIX]    (Find OPENMODELICAHOME - the directory where all OpenModelica dependencies are installed.)],[OMHOME="$withval"],[OMHOME=no])
+AC_ARG_WITH(openmodelicahome,  [  --with-openmodelicahome=[OPENMODELICAHOME|PREFIX]    (Find OPENMODELICAHOME - the directory where all OpenModelica dependencies are installed.)],
+[
+  if test -z "$OPENMODELICAHOME"; then
+    OMHOME="$withval"  # 仅当环境变量未设置时，才用命令行参数
+  else
+    OMHOME="no"  # 环境变量已存在，命令行参数无效
+  fi
+],
+[OMHOME=no])
 
 if echo $host | grep -iq darwin; then
   APP=".app"
@@ -32,22 +40,22 @@ fi
 
 define(FIND_OPENMODELICAHOME, [
   AC_MSG_CHECKING([for OPENMODELICAHOME])
-if test ! -z "$USINGPRESETBUILDDIR"; then
-  OPENMODELICAHOME="$OMBUILDDIR"
-  AC_MSG_RESULT($OPENMODELICAHOME)
-else
-  if test "$OMHOME" = "no"; then
-    if test -z "$OPENMODELICAHOME"; then
-      OPENMODELICAHOME="$PREFIX"
-    else
-      OPENMODELICAHOME="$OPENMODELICAHOME"
-    fi
-  else
+
+  # 优先级：环境变量 > 命令行参数 > PREFIX
+  if test ! -z "$OPENMODELICAHOME"; then
+    # 环境变量存在，使用它
+    AC_MSG_RESULT($OPENMODELICAHOME (from environment))
+  elif test "$OMHOME" != "no"; then
+    # 命令行参数存在
     OPENMODELICAHOME="$OMHOME"
+    AC_MSG_RESULT($OPENMODELICAHOME (from --with-openmodelicahome))
+  else
+    # 使用默认值
+    OPENMODELICAHOME="$PREFIX"
+    AC_MSG_RESULT($OPENMODELICAHOME (default))
   fi
 
-  AC_MSG_RESULT($OPENMODELICAHOME)
-
+  # 统一进行文件验证（无论来源）
   AC_MSG_CHECKING([for $OPENMODELICAHOME/lib/omc/ModelicaBuiltin.mo])
   if test -f "$OPENMODELICAHOME/lib/omc/ModelicaBuiltin.mo"; then
     AC_MSG_RESULT(ok)
@@ -55,20 +63,14 @@ else
     AC_MSG_ERROR(failed)
   fi
 
-  AC_MSG_CHECKING([for $OPENMODELICAHOME/share/omc/omc_communication.idl])
-  if test -f "$OPENMODELICAHOME/share/omc/omc_communication.idl"; then
-    AC_MSG_RESULT(ok)
+  # Linux 特定配置
+  if echo $host | grep -iq darwin; then
+    true
+  elif test "$host" = "i586-pc-mingw32msvc"; then
+    true
   else
-    AC_MSG_ERROR(failed)
+    LDFLAGS="$LDFLAGS -Wl,-rpath-link,$OPENMODELICAHOME/lib/$host_short/omc"
   fi
-fi
-if echo $host | grep -iq darwin; then
-  true
-elif test "$host" = "i586-pc-mingw32msvc"; then
-  true
-else
-  LDFLAGS="$LDFLAGS -Wl,-rpath-link,$OPENMODELICAHOME/lib/$host_short/omc"
-fi
 ])
 
 define(FIND_LIBOPENMODELICACOMPILER, [

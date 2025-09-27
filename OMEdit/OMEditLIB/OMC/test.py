@@ -141,9 +141,11 @@ import OMPython
 from OMPython import OMCSessionZMQ
 import os
 
+print(os.environ.get('OPENMODELICAHOME'))
 omc = OMCSessionZMQ()
-S = 'parseFile("/home/yuhangdai/test.mo","UTF-8")'
+print(os.environ.get('OPENMODELICAHOME'))
+# S = 'parseFile("/home/yuhangdai/test.mo","UTF-8")'
 
-result = omc.sendExpression("system(\"initGarbageCollector\")" , False)
+result = omc.sendExpression("getVersion()" , False)
 print(type(result))
 print(result)

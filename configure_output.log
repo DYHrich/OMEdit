@@ -1,0 +1,61 @@
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables...
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether the compiler supports GNU C... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to enable C11 features... none needed
+checking for g++... g++
+checking whether the compiler supports GNU C++... yes
+checking whether g++ accepts -g... yes
+checking for g++ option to enable C++11 features... none needed
+checking how to run the C preprocessor... gcc -E
+ln: failed to create symbolic link '.git/hooks/pre-commit': File exists
+configure: OpenModelica commit-msg hook has been installed
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... x86_64-pc-linux-gnu
+checking target system type... x86_64-pc-linux-gnu
+build_short: x86_64-linux-gnu
+host_short: x86_64-linux-gnu
+checking if cppruntime is requested... no
+checking for CORBA... none
+configure: "Subproject OMCompiler does not exist"
+configure: "Subproject OMShell does not exist"
+configure.ac:35: warning: The macro `AC_TRY_LINK' is obsolete.
+configure.ac:35: You should run autoupdate.
+./lib/autoconf/general.m4:2920: AC_TRY_LINK is expanded from...
+configure.ac:35: the top level
+configure.ac:38: warning: AC_OUTPUT should be used without arguments.
+configure.ac:38: You should run autoupdate.
+configure: creating ./config.status
+config.status: creating Makefile
+=== configuring in OMPlot (/home/yuhangdai/OpenModelica/OMPlot)
+configure: running /bin/bash ./configure --disable-option-checking '--prefix=/home/yuhangdai/OpenModelica/build_cmake'  '--with-ombuilddir=/home/yuhangdai/OpenModelica/build_cmake' --cache-file=/dev/null --srcdir=.
+checking build system type... x86_64-pc-linux-gnu
+checking host system type... x86_64-pc-linux-gnu
+checking target system type... x86_64-pc-linux-gnu
+checking for gcc... gcc
+checking whether the C compiler works... yes
+checking for C compiler default output file name... a.out
+checking for suffix of executables...
+checking whether we are cross compiling... no
+checking for suffix of object files... o
+checking whether the compiler supports GNU C... yes
+checking whether gcc accepts -g... yes
+checking for gcc option to enable C11 features... none needed
+checking for g++... g++
+checking whether the compiler supports GNU C++... yes
+checking whether g++ accepts -g... yes
+checking for g++ option to enable C++11 features... none needed
+checking whether g++ supports C++17 features with -std=c++17... yes
+checking if qt6 is requested... no
+checking for qmake in env.vars QMAKE and QTDIR... /bin/qmake
+checking for qmake arguments... /bin/qmake -qt5
+checking for lrelease... /usr/lib/qt5/bin/lrelease
+build_short: x86_64-linux-gnu
+host_short: x86_64-linux-gnu
+checking for OPENMODELICAHOME... /home/yuhangdai/OpenModelica/build/install_cmake (from environment)
+checking for /home/yuhangdai/OpenModelica/build/install_cmake/lib/omc/ModelicaBuiltin.mo... configure: error: failed
+configure: error: ./configure failed for OMPlot

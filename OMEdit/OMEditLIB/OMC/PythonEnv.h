@@ -30,11 +30,12 @@ public:
 
 private:
     PythonEnv();
-    ~PythonEnv() = default;
+    ~PythonEnv();
 
     std::unique_ptr<py::scoped_interpreter> interpreter;
     py::object omc_session;
     bool initialized = false;
+    FILE* error_log_file = nullptr;
 };
 
 #pragma GCC diagnostic pop

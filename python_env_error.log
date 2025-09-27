@@ -1,0 +1,42 @@
+[Sat Sep 27 12:16:13 2025] PythonEnv init failed: Exception: OMC Server did not start (timeout=10.000000). Could not open file /tmp/openmodelica.yuhangdai.port.4aacf130905b4d6b95c256c4123dae8b
+
+At:
+  /home/yuhangdai/.local/lib/python3.10/site-packages/OMPython/__init__.py(747): _connect_to_omc
+  /home/yuhangdai/.local/lib/python3.10/site-packages/OMPython/__init__.py(714): __init__
+
+[Sat Sep 27 12:22:08 2025] PythonEnv init failed: Exception: OMC Server did not start (timeout=10.000000). Could not open file /tmp/openmodelica.yuhangdai.port.952fde093fdc430eaf756880b0459292
+
+At:
+  /home/yuhangdai/.local/lib/python3.10/site-packages/OMPython/__init__.py(752): _connect_to_omc
+  /home/yuhangdai/.local/lib/python3.10/site-packages/OMPython/__init__.py(714): __init__
+
+[Sat Sep 27 12:25:21 2025] PythonEnv init failed: Exception: OMC Server did not start (timeout=10.000000). Could not open file /tmp/openmodelica.yuhangdai.port.4578d274e9824e65962a7ac844d7c317
+
+At:
+  /home/yuhangdai/.local/lib/python3.10/site-packages/OMPython/__init__.py(752): _connect_to_omc
+  /home/yuhangdai/.local/lib/python3.10/site-packages/OMPython/__init__.py(714): __init__
+
+[Sat Sep 27 12:28:43 2025] PythonEnv init failed: Exception: OMC Server did not start (timeout=10.000000). Could not open file /tmp/openmodelica.yuhangdai.port.36709d4f43b8468d98df1a6cb104ee3c
+
+At:
+  /home/yuhangdai/.local/lib/python3.10/site-packages/OMPython/__init__.py(753): _connect_to_omc
+  /home/yuhangdai/.local/lib/python3.10/site-packages/OMPython/__init__.py(714): __init__
+
+[Sat Sep 27 12:44:44 2025] PythonEnv init failed: Exception: OMC Server did not start (timeout=10.000000). Could not open file /tmp/openmodelica.yuhangdai.port.e9a4e0db92064736a51f5be8dacf6c92
+
+At:
+  /home/yuhangdai/.local/lib/python3.10/site-packages/OMPython/__init__.py(758): _connect_to_omc
+  /home/yuhangdai/.local/lib/python3.10/site-packages/OMPython/__init__.py(718): __init__
+
+[Sat Sep 27 15:42:29 2025] PythonEnv init failed: Exception: OMC Server did not start (timeout=10.000000). Could not open file /tmp/openmodelica.yuhangdai.port.b57ec49336644a85b0cf462a6258b33e
+
+At:
+  /home/yuhangdai/.local/lib/python3.10/site-packages/OMPython/__init__.py(763): _connect_to_omc
+  /home/yuhangdai/.local/lib/python3.10/site-packages/OMPython/__init__.py(723): __init__
+
+[Sat Sep 27 17:06:08 2025] PythonEnv init failed: Exception: OMC Server did not start (timeout=10.000000). Could not open file /tmp/openmodelica.yuhangdai.port.a4eb0f88a8de4fd293c8cfc03581e87a
+
+At:
+  /home/yuhangdai/.local/lib/python3.10/site-packages/OMPython/__init__.py(763): _connect_to_omc
+  /home/yuhangdai/.local/lib/python3.10/site-packages/OMPython/__init__.py(723): __init__
+

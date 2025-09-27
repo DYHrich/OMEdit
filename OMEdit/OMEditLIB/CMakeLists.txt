@@ -456,6 +456,15 @@ target_link_libraries(OMEditLib PUBLIC ${OPENSCENEGRAPH_LIBRARIES})
 target_link_libraries(OMEditLib PUBLIC OpenGL::GL)
 
 # Add Python3 and pybind11 support
+# 指定 Python 解释器路径
+set(Python3_EXECUTABLE "/usr/bin/python3")  # Windows
+# 指定 Python 头文件目录（包含 Python.h 的目录）
+#set(Python3_INCLUDE_DIRS "//ginux/.conda/envs/om/include")
+# 指定 Python 库文件（.lib 或 .so/.dylib）
+#set(Python3_LIBRARIES "C:/Users/ginux/.conda/envs/om/lib/python312.lib")  # Windows
+# set(Python3_LIBRARIES "/usr/local/python39/lib/libpython39.so")  # Linux
+# 查找 Python3（此时会使用上面指定的路径）
+find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 find_package(Python3 COMPONENTS Interpreter Development REQUIRED)
 find_package(pybind11 REQUIRED)
 target_link_libraries(OMEditLib PRIVATE pybind11::embed)

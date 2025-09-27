@@ -5,10 +5,20 @@
             "name": "Debug with GDB",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/install_cmake/bin/OMEdit",
+            "program": "${workspaceFolder}/build_cmake/install_cmake/bin/OMEdit",
             "args": [],
             "cwd": "${workspaceFolder}",
-            "MIMode": "gdb"
+            "MIMode": "gdb",
+            "environment": [
+                {
+                    "name": "PYTHONPATH",
+                    "value": "./.local/lib/python3.10/site-packages"
+                },
+                {
+                    "name": "OPENMODELICAHOME",
+                    "value": "/home/yuhangdai/OpenModelica/build/install_cmake"
+                }
+            ]
         }
     ]
 }

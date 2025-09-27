@@ -7,7 +7,7 @@
             "command": "make",
             "args": ["-j4"],
             "options": {
-                "cwd": "${workspaceFolder}/build"
+                "cwd": "${workspaceFolder}/build_cmake"
             },
             "group": {
                 "kind": "build",
@@ -31,7 +31,7 @@
             "command": "make",
             "args": ["clean"],
             "options": {
-                "cwd": "${workspaceFolder}/build"
+                "cwd": "${workspaceFolder}/build_cmake"
             },
             "group": "build",
             "presentation": {
@@ -51,7 +51,7 @@
                 "-DCMAKE_INSTALL_PREFIX=../install_cmake"
             ],
             "options": {
-                "cwd": "${workspaceFolder}/build"
+                "cwd": "${workspaceFolder}/build_cmake"
             },
             "group": "build",
             "presentation": {
@@ -67,7 +67,7 @@
             "command": "make",
             "args": ["install", "-j4"],
             "options": {
-                "cwd": "${workspaceFolder}/build"
+                "cwd": "${workspaceFolder}/build_cmake"
             },
             "group": "build",
             "presentation": {

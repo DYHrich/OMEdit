@@ -178,7 +178,7 @@ const char* SettingsImpl__getInstallationDirectoryPath(void) {
   //   exit(EXIT_FAILURE);
   // }
 
-  commonSetEnvVar("OPENMODELICAHOME", omc_installationPath);
+  // commonSetEnvVar("OPENMODELICAHOME", omc_installationPath);
   return omc_installationPath;
 }
 

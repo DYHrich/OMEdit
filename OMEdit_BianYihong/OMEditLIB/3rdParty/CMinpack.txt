@@ -1,1 +1,0 @@
-git subtree add --prefix CMinpack https://github.com/devernay/cminpack master
