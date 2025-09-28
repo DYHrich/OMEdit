@@ -1480,7 +1480,7 @@ VariablesWidget::VariablesWidget(QWidget *pParent)
   mpToolBar->addSeparator();
   mpToolBar->addWidget(mpSpeedLabel);
   mpToolBar->addWidget(mpSpeedComboBox);
-#ifndef OM_DISABLE_ANIMA
+// #ifndef OM_DISABLE_ANIMA
   // time manager
   mpTimeManager = new TimeManager(0.0, 0.0, 0.0, 0.0, 0.1, 0.0, 1.0);
   mpTimeManager->setStartTime(0.0);
@@ -1488,7 +1488,7 @@ VariablesWidget::VariablesWidget(QWidget *pParent)
   mpTimeManager->setVisTime(mpTimeManager->getStartTime());
   mpTimeManager->setPause(true);
   connect(mpTimeManager->getUpdateSceneTimer(), SIGNAL(timeout()), SLOT(incrementVisualization()));
-#endif  
+// #endif
   // create variables tree widget
   mpVariablesTreeView = new VariablesTreeView(this);
   mpVariablesTreeModel = new VariablesTreeModel(mpVariablesTreeView);

@@ -124,7 +124,6 @@ set(OMEDITLIB_SOURCES Util/Helper.cpp
                       OMS/SystemSimulationInformationDialog.cpp
                       OMS/OMSSimulationDialog.cpp
                       OMS/OMSSimulationOutputWidget.cpp
-#                      Animation/TimeManager.cpp
                       Util/ResourceCache.cpp
                       Util/NetworkAccessManager.cpp
                       Util/GitHubArtifactDownloader.cpp

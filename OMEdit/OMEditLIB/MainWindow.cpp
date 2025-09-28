@@ -4609,11 +4609,13 @@ void MainWindow::switchToPlottingPerspective()
   if (tabifiedDockWidgetsList.size() > 0) {
     tabifyDockWidget(tabifiedDockWidgetsList.at(0), mpVariablesDockWidget);
   }
+#ifndef OM_DISABLE_DEBUG
   mpStackFramesDockWidget->hide();
   mpBreakpointsDockWidget->hide();
   mpLocalsDockWidget->hide();
   mpTargetOutputDockWidget->hide();
   mpGDBLoggerDockWidget->hide();
+#endif
 }
 
 /*!
