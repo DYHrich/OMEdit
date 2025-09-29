@@ -15,11 +15,19 @@ PythonEnv::PythonEnv() {
         py::module_ ompython = py::module_::import("OMPython");
         py::object OMCSessionZMQ = ompython.attr("OMCSessionZMQ");
 
+        py::module_ omsimulatorpython = py::module_::import("OMSimulator");
+        py::object OMSimulator = omsimulatorpython.attr("OMSimulator");
+
         // 创建OMCSessionZMQ实例
         omc_session = OMCSessionZMQ();
         std::cout << "OMCSessionZMQ create success" << std::endl;
 
         initialized = true;
+
+        oms_simulator = OMSimulator();
+        std::cout << "OMSimulator create success" << std::endl;
+
+        oms_initialized = true;
     } catch (const std::runtime_error& e) {
             // 使用文件指针将异常输出到文件
         if (error_log_file) {
@@ -53,17 +61,17 @@ PythonEnv& PythonEnv::get_instance() {
     return instance;
 }
 
-std::string PythonEnv::send_expression(const std::string& expr) {
-    try {
-        py::str result = omc_session.attr("sendExpression")(expr);
-        return static_cast<std::string>(result);
-    } catch (const py::error_already_set& e) {
-        std::cerr << "send expression failed：" << e.what() << std::endl;
-        return "";
-    }
-}
+// std::string PythonEnv::send_expression(const std::string& expr) {
+//     try {
+//         py::str result = omc_session.attr("sendExpression")(expr);
+//         return static_cast<std::string>(result);
+//     } catch (const py::error_already_set& e) {
+//         std::cerr << "send expression failed：" << e.what() << std::endl;
+//         return "";
+//     }
+// }
 
-// 新增：返回原始py::object用于处理未知类型
+// 新增：返回原始py::object用于处理未知类型   OMPython
 py::object PythonEnv::send_expression_object(const std::string& expr, bool parsed) {
     try {
         return omc_session.attr("sendExpression")(expr, parsed);
@@ -72,3 +80,16 @@ py::object PythonEnv::send_expression_object(const std::string& expr, bool parse
         return py::none();
     }
 }
+
+
+// 获取oms_simulator对象
+py::object PythonEnv::get_oms_simulator() const {
+    if (!oms_initialized || oms_simulator.ptr() == nullptr) {
+        std::cerr << "Warning: oms_simulator is not initialized" << std::endl;
+        return py::none();
+    }
+    return oms_simulator;
+}
+
+
+

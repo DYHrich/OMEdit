@@ -37,6 +37,14 @@
 #include "../OMSimulator/OMSimulator.h"
 #include "Modeling/MessagesWidget.h"
 
+// 保存slots宏定义并临时取消
+#pragma push_macro("slots")
+#undef slots
+#include "../OMC/PythonEnv.h"
+#pragma pop_macro("slots")
+
+#include "../OMC/PythonQtConverter.h"
+
 #include <QObject>
 #include <QElapsedTimer>
 
@@ -67,6 +75,10 @@ public:
   static QString getFMUKindString(oms_fmi_kind_enu_t kind);
   static QString getSignalTypeString(oms_signal_type_enu_t type);
   static QString getCausalityString(oms_causality_enu_t causality);
+  static py::object convertCausalityToPython(oms_causality_enu_t causality);
+  static py::object convertTypeToPython(oms_signal_type_enu_t type);
+  static py::object convertSystemToPython(oms_system_enu_t system);
+  static py::object convertSolverToPython(oms_solver_enu_t solver);
 
   bool statusToBool(oms_status_enu_t status);
   void emitLogGUIMessage(MessageItem messageItem) {emit logGUIMessage(messageItem);}

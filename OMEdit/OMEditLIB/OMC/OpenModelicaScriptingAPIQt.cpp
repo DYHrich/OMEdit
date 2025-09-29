@@ -11377,7 +11377,7 @@ QString OMCInterface::cd(QString newWorkingDirectory)
   commandLog.append("\"" + newWorkingDirectory + "\"");
   emit logCommand("cd("+commandLog+")");
 
-  QByteArray newWorkingDirectory_utf8 = newWorkingDirectory.toUtf8();
+  // QByteArray newWorkingDirectory_utf8 = newWorkingDirectory.toUtf8();
   QString result;
   void *result_mm = NULL;
 
@@ -14058,9 +14058,6 @@ QList<QString > OMCInterface::parseString(QString data, QString filename)
   void *result_mm = NULL;
 
   try {
-    
-
-
 
     // 使用python接口替换原有的omc_OpenModelicaScriptingAPI接口
     PythonEnv& python_env = PythonEnv::get_instance();
@@ -14068,9 +14065,6 @@ QList<QString > OMCInterface::parseString(QString data, QString filename)
     py::object python_result = python_env.send_expression_object(command, false);
     result = PythonQtConverter::ToQListQString(python_result);
 
-
-
-    
   } catch(std::exception &exception) {
     emit throwException(QString("parseString failed. %1").arg(exception.what()));
   }

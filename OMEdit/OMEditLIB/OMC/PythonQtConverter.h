@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <stdexcept>
 #include "OpenModelicaScriptingAPIQt.h"
+#include "../OMSimulator/Types.h"
 
 // 前向声明避免头文件中包含pybind11
 namespace pybind11 {
@@ -120,6 +121,23 @@ public:
     static QString RemoveOuterParentheses(const QString& input);
     static QString RemoveOuterBraces(const QString& input);
     static QString UnescapeString(const QString& input);
+
+    // OMSimulator_Types部分转换
+    static oms_message_type_enu_t To_oms_message_type_enu_t(const pybind11::object& obj);
+    static oms_status_enu_t To_oms_status_enu_t(const pybind11::object& obj);
+    static oms_modelState_enu_t To_oms_modelState_enu_t(const pybind11::object& obj);
+    static oms_causality_enu_t To_oms_causality_enu_t(const pybind11::object& obj);
+    static oms_tlm_interpolation_t To_oms_tlm_interpolation_t(const pybind11::object& obj);
+    static oms_fault_type_enu_t To_oms_fault_type_enu_t(const pybind11::object& obj);
+    static oms_tlm_domain_t To_oms_tlm_domain_t(const pybind11::object& obj);
+    static oms_solver_enu_t To_oms_solver_enu_t(const pybind11::object& obj);
+    static oms_alg_solver_enu_t To_oms_alg_solver_enu_t(const pybind11::object& obj);
+    static oms_element_enu_t To_oms_element_enu_t(const pybind11::object& obj);
+    static oms_system_enu_t To_oms_system_enu_t(const pybind11::object& obj);
+    static oms_component_enu_t To_oms_component_enu_t(const pybind11::object& obj);
+    static oms_signal_type_enu_t To_oms_signal_type_enu_t(const pybind11::object& obj);
+    static oms_connection_type_enu_t To_oms_connection_type_enu_t(const pybind11::object& obj);
+    static oms_fmi_kind_enu_t To_oms_fmi_kind_enu_t(const pybind11::object& obj);
 
 private:
     // 私有辅助方法

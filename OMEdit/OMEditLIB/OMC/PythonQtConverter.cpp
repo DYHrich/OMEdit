@@ -1182,3 +1182,236 @@ OMCInterface::getAvailableMatchingAlgorithms_res PythonQtConverter::ToGetAvailab
 
     return result;
 }
+
+oms_message_type_enu_t PythonQtConverter::To_oms_message_type_enu_t(const pybind11::object& obj)
+{
+    try {
+        // 尝试直接转换为整数
+        int value = obj.cast<int>();
+
+        // 验证值是否在有效范围内
+        if (value >= oms_message_info && value <= oms_message_trace) {
+            return static_cast<oms_message_type_enu_t>(value);
+        } else {
+            qDebug() << "PythonQtConverter::ToOmsMessageType: Invalid message type value:" << value;
+            return oms_message_info; // 默认返回 info 类型
+        }
+    } catch (const std::exception& e) {
+        qDebug() << "PythonQtConverter::ToOmsMessageType: Failed to convert object to int:" << e.what();
+        return oms_message_info; // 默认返回 info 类型
+    }
+}
+
+// OMSimulator枚举类型转换函数实现
+oms_status_enu_t PythonQtConverter::To_oms_status_enu_t(const pybind11::object& obj) {
+    try {
+        int value = obj.cast<int>();
+        if (value >= oms_status_ok && value <= oms_status_pending) {
+            return static_cast<oms_status_enu_t>(value);
+        } else {
+            qDebug() << "PythonQtConverter::To_oms_status_enu_t: Value out of range:" << value;
+            return oms_status_ok; // 默认返回 ok 状态
+        }
+    } catch (const std::exception& e) {
+        qDebug() << "PythonQtConverter::To_oms_status_enu_t: Failed to convert object to int:" << e.what();
+        return oms_status_ok; // 默认返回 ok 状态
+    }
+}
+
+oms_modelState_enu_t PythonQtConverter::To_oms_modelState_enu_t(const pybind11::object& obj) {
+    try {
+        int value = obj.cast<int>();
+        // 检查是否为有效的位标志组合
+        if (value >= 0 && value <= (oms_modelState_virgin | oms_modelState_enterInstantiation |
+                                   oms_modelState_instantiated | oms_modelState_initialization |
+                                   oms_modelState_simulation | oms_modelState_error)) {
+            return static_cast<oms_modelState_enu_t>(value);
+        } else {
+            qDebug() << "PythonQtConverter::To_oms_modelState_enu_t: Value out of range:" << value;
+            return oms_modelState_virgin; // 默认返回 virgin 状态
+        }
+    } catch (const std::exception& e) {
+        qDebug() << "PythonQtConverter::To_oms_modelState_enu_t: Failed to convert object to int:" << e.what();
+        return oms_modelState_virgin; // 默认返回 virgin 状态
+    }
+}
+
+oms_causality_enu_t PythonQtConverter::To_oms_causality_enu_t(const pybind11::object& obj) {
+    try {
+        int value = obj.cast<int>();
+        if (value >= oms_causality_input && value <= oms_causality_calculatedParameter) {
+            return static_cast<oms_causality_enu_t>(value);
+        } else {
+            qDebug() << "PythonQtConverter::To_oms_causality_enu_t: Value out of range:" << value;
+            return oms_causality_input; // 默认返回 input
+        }
+    } catch (const std::exception& e) {
+        qDebug() << "PythonQtConverter::To_oms_causality_enu_t: Failed to convert object to int:" << e.what();
+        return oms_causality_input; // 默认返回 input
+    }
+}
+
+oms_tlm_interpolation_t PythonQtConverter::To_oms_tlm_interpolation_t(const pybind11::object& obj) {
+    try {
+        int value = obj.cast<int>();
+        if (value >= oms_tlm_no_interpolation && value <= oms_tlm_fine_grained) {
+            return static_cast<oms_tlm_interpolation_t>(value);
+        } else {
+            qDebug() << "PythonQtConverter::To_oms_tlm_interpolation_t: Value out of range:" << value;
+            return oms_tlm_no_interpolation; // 默认返回 no_interpolation
+        }
+    } catch (const std::exception& e) {
+        qDebug() << "PythonQtConverter::To_oms_tlm_interpolation_t: Failed to convert object to int:" << e.what();
+        return oms_tlm_no_interpolation; // 默认返回 no_interpolation
+    }
+}
+
+oms_fault_type_enu_t PythonQtConverter::To_oms_fault_type_enu_t(const pybind11::object& obj) {
+    try {
+        int value = obj.cast<int>();
+        if (value >= oms_fault_type_bias && value <= oms_fault_type_gain) {
+            return static_cast<oms_fault_type_enu_t>(value);
+        } else {
+            qDebug() << "PythonQtConverter::To_oms_fault_type_enu_t: Value out of range:" << value;
+            return oms_fault_type_bias; // 默认返回 bias
+        }
+    } catch (const std::exception& e) {
+        qDebug() << "PythonQtConverter::To_oms_fault_type_enu_t: Failed to convert object to int:" << e.what();
+        return oms_fault_type_bias; // 默认返回 bias
+    }
+}
+
+oms_tlm_domain_t PythonQtConverter::To_oms_tlm_domain_t(const pybind11::object& obj) {
+    try {
+        int value = obj.cast<int>();
+        if (value >= oms_tlm_domain_input && value <= oms_tlm_domain_mechanical) {
+            return static_cast<oms_tlm_domain_t>(value);
+        } else {
+            qDebug() << "PythonQtConverter::To_oms_tlm_domain_t: Value out of range:" << value;
+            return oms_tlm_domain_input; // 默认返回 input
+        }
+    } catch (const std::exception& e) {
+        qDebug() << "PythonQtConverter::To_oms_tlm_domain_t: Failed to convert object to int:" << e.what();
+        return oms_tlm_domain_input; // 默认返回 input
+    }
+}
+
+oms_solver_enu_t PythonQtConverter::To_oms_solver_enu_t(const pybind11::object& obj) {
+    try {
+        int value = obj.cast<int>();
+        if (value >= oms_solver_sc_explicit_euler && value <= oms_solver_wc_ma) {
+            return static_cast<oms_solver_enu_t>(value);
+        } else {
+            qDebug() << "PythonQtConverter::To_oms_solver_enu_t: Value out of range:" << value;
+            return oms_solver_sc_explicit_euler; // 默认返回 explicit_euler
+        }
+    } catch (const std::exception& e) {
+        qDebug() << "PythonQtConverter::To_oms_solver_enu_t: Failed to convert object to int:" << e.what();
+        return oms_solver_sc_explicit_euler; // 默认返回 explicit_euler
+    }
+}
+
+oms_alg_solver_enu_t PythonQtConverter::To_oms_alg_solver_enu_t(const pybind11::object& obj) {
+    try {
+        int value = obj.cast<int>();
+        if (value >= oms_alg_solver_fixedpoint && value <= oms_alg_solver_kinsol) {
+            return static_cast<oms_alg_solver_enu_t>(value);
+        } else {
+            qDebug() << "PythonQtConverter::To_oms_alg_solver_enu_t: Value out of range:" << value;
+            return oms_alg_solver_fixedpoint; // 默认返回 fixedpoint
+        }
+    } catch (const std::exception& e) {
+        qDebug() << "PythonQtConverter::To_oms_alg_solver_enu_t: Failed to convert object to int:" << e.what();
+        return oms_alg_solver_fixedpoint; // 默认返回 fixedpoint
+    }
+}
+
+oms_element_enu_t PythonQtConverter::To_oms_element_enu_t(const pybind11::object& obj) {
+    try {
+        int value = obj.cast<int>();
+        if (value >= oms_element_system && value <= oms_element_component) {
+            return static_cast<oms_element_enu_t>(value);
+        } else {
+            qDebug() << "PythonQtConverter::To_oms_element_enu_t: Value out of range:" << value;
+            return oms_element_system; // 默认返回 none
+        }
+    } catch (const std::exception& e) {
+        qDebug() << "PythonQtConverter::To_oms_element_enu_t: Failed to convert object to int:" << e.what();
+        return oms_element_system; // 默认返回 none
+    }
+}
+
+oms_system_enu_t PythonQtConverter::To_oms_system_enu_t(const pybind11::object& obj) {
+    try {
+        int value = obj.cast<int>();
+        if (value >= oms_system_none && value <= oms_system_wc) {
+            return static_cast<oms_system_enu_t>(value);
+        } else {
+            qDebug() << "PythonQtConverter::To_oms_system_enu_t: Value out of range:" << value;
+            return oms_system_none; // 默认返回 none
+        }
+    } catch (const std::exception& e) {
+        qDebug() << "PythonQtConverter::To_oms_system_enu_t: Failed to convert object to int:" << e.what();
+        return oms_system_none; // 默认返回 none
+    }
+}
+
+oms_component_enu_t PythonQtConverter::To_oms_component_enu_t(const pybind11::object& obj) {
+    try {
+        int value = obj.cast<int>();
+        if (value >= oms_component_none && value <= oms_component_external) {
+            return static_cast<oms_component_enu_t>(value);
+        } else {
+            qDebug() << "PythonQtConverter::To_oms_component_enu_t: Value out of range:" << value;
+            return oms_component_none; // 默认返回 none
+        }
+    } catch (const std::exception& e) {
+        qDebug() << "PythonQtConverter::To_oms_component_enu_t: Failed to convert object to int:" << e.what();
+        return oms_component_none; // 默认返回 none
+    }
+}
+
+oms_signal_type_enu_t PythonQtConverter::To_oms_signal_type_enu_t(const pybind11::object& obj) {
+    try {
+        int value = obj.cast<int>();
+        if (value >= oms_signal_type_real && value <= oms_signal_type_bus) {
+            return static_cast<oms_signal_type_enu_t>(value);
+        } else {
+            qDebug() << "PythonQtConverter::To_oms_signal_type_enu_t: Value out of range:" << value;
+            return oms_signal_type_real; // 默认返回 real
+        }
+    } catch (const std::exception& e) {
+        qDebug() << "PythonQtConverter::To_oms_signal_type_enu_t: Failed to convert object to int:" << e.what();
+        return oms_signal_type_real; // 默认返回 real
+    }
+}
+
+oms_connection_type_enu_t PythonQtConverter::To_oms_connection_type_enu_t(const pybind11::object& obj) {
+    try {
+        int value = obj.cast<int>();
+        if (value >= oms_connection_single && value <= oms_connection_bus) {
+            return static_cast<oms_connection_type_enu_t>(value);
+        } else {
+            qDebug() << "PythonQtConverter::To_oms_connection_type_enu_t: Value out of range:" << value;
+            return oms_connection_single; // 默认返回 single
+        }
+    } catch (const std::exception& e) {
+        qDebug() << "PythonQtConverter::To_oms_connection_type_enu_t: Failed to convert object to int:" << e.what();
+        return oms_connection_single; // 默认返回 single
+    }
+}
+
+oms_fmi_kind_enu_t PythonQtConverter::To_oms_fmi_kind_enu_t(const pybind11::object& obj) {
+    try {
+        int value = obj.cast<int>();
+        if (value >= oms_fmi_kind_unknown && value <= oms_fmi_kind_me_and_cs) {
+            return static_cast<oms_fmi_kind_enu_t>(value);
+        } else {
+            qDebug() << "PythonQtConverter::To_oms_fmi_kind_enu_t: Value out of range:" << value;
+            return oms_fmi_kind_unknown; // 默认返回 unknown
+        }
+    } catch (const std::exception& e) {
+        qDebug() << "PythonQtConverter::To_oms_fmi_kind_enu_t: Failed to convert object to int:" << e.what();
+        return oms_fmi_kind_unknown; // 默认返回 unknown
+    }
+}

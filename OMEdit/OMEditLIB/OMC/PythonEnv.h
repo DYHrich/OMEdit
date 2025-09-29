@@ -26,6 +26,8 @@ public:
     // 发送表达式并返回原始py::object（用于处理未知类型）
     py::object send_expression_object(const std::string& expr, bool parsed = true);
 
+    py::object get_oms_simulator() const;
+
     bool is_ready() const { return initialized && omc_session.ptr() != nullptr; }
 
 private:
@@ -34,7 +36,9 @@ private:
 
     std::unique_ptr<py::scoped_interpreter> interpreter;
     py::object omc_session;
+    py::object oms_simulator;
     bool initialized = false;
+    bool oms_initialized = false;
     FILE* error_log_file = nullptr;
 };
 
